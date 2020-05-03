@@ -1,5 +1,7 @@
 # SGP4
 JS implementation of the SGP4 algorithm to calculate satellite positions
+
+## To Do:
 - [ ] Implement SGP4
 - [x] Spending some time with the ReadMe
 
