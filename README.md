@@ -55,7 +55,9 @@ tle_objects.forEach(obj => {
     this.no | Mean Motion
     this.revs | Revolution Number
 * `TLEData.sgp4(t)`
+  * Returns object like `{pos: a, speed: b}`
 * `TLEData.getLonLatatT(t)`
+  * Returns list `[lon, lat]`
 ### Constants
 #### Static fields:
 Variable name | Value
