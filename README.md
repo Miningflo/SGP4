@@ -29,13 +29,14 @@ tle_objects.forEach(obj => {
 ```
 
 ## Objects:
-### <u>TLEData</u>
+### TLEData
 #### Methods of `TLEData` object:
 * `TLEData.constructor(tle-string)`
   * Variable name | Meaning
     ------------- | -----
+    **Line 0** | --
     this.satname | Name of Satellite
-    -- | --
+    **Line 1** | --
     this.satnum | Satellite Number
     this.classification | Classification (U/C/S)
     this.epochyear | Epoch Year
@@ -45,7 +46,7 @@ tle_objects.forEach(obj => {
     this.nddot | Second Derivative of Mean Motion
     this.bstar | Drag Term
     this.elem | Element Set Number
-    --|--
+    **Line 2** |--
     this.inclo | Inclination
     this.nodeo | Right Ascension of the Ascending Node
     this.ecco | Eccentricity
@@ -55,7 +56,7 @@ tle_objects.forEach(obj => {
     this.revs | Revolution Number
 * `TLEData.sgp4(t)`
 * `TLEData.getLonLatatT(t)`
-### <u>Constants</u>
+### Constants
 #### Static fields:
 Variable name | Value
 ------------- | -----
