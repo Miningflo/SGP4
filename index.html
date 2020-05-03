@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <script src="sgp4.js"></script>
+
+</head>
+<body>
+<script>
+    let console = {};
+    console.log = function (txt) {
+        document.getElementsByTagName("body")[0].innerHTML += txt.toString();
+    };
+
+    sgp4();
+</script>
+</body>
+</html>
