@@ -43,6 +43,13 @@ tle_objects.forEach(obj => {
 ### TLEData
 #### Methods of `TLEData` object:
 * `TLEData.constructor(tle-string)`
+  * Creates `TLEData` object with TLE string
+* `TLEData.sgp4(t)`
+  * Returns object like `{pos: a, speed: b}`
+* `TLEData.getLonLatatT(t)`
+  * Returns array `[lon, lat]`
+#### Fields of `TLEData` object:
+*Extracted Fields from TLE string*
 
 Variable name | Meaning | Units | Example
 ------------- | ------- | :-----: | -------:
@@ -53,7 +60,6 @@ satnum | Satellite Number | - | 25338
 classification | Classification (U/C/S) | - | "U"
 epochyear | Epoch Year | YY | 20
 epochdays | Julian Date Fraction | Days | 121.15888698
-jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` | Days | 2458970
 ndot | Ballistic Coefficient | revs/day² | 5e-7
 nddot | Second Derivative of Mean Motion | revs/day³ | 00000-0
 bstar | Drag Term | radii<sup>-1</sup> | 39359-4
@@ -66,10 +72,8 @@ argpo | Argument of Perigee | degrees | 48.3965
 mo | Mean Anomaly | degrees | 311.8172
 no | Mean Motion | orbits/day | 14.25961394
 revs | Revolution Number | - | 14235
-* `TLEData.sgp4(t)`
-  * Returns object like `{pos: a, speed: b}`
-* `TLEData.getLonLatatT(t)`
-  * Returns array `[lon, lat]`
+**Other (calculated) fields** |
+jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` | Days | 2458970
 ### Constants
 #### Static fields:
 Variable name | Value
