@@ -40,10 +40,10 @@ tle_objects.forEach(obj => {
 Variable name | Meaning | Units | Example
 ------------- | ------- | :-----: | -------:
 **Line 0** |
-satname | Name of Satellite | - | NOAA 15
+satname | Name of Satellite | - | "NOAA 15"
 **Line 1** |
 satnum | Satellite Number | - | 25338
-classification | Classification (U/C/S) | - | U
+classification | Classification (U/C/S) | - | "U"
 epochyear | Epoch Year | YY | 20
 epochdays | Julian Date Fraction | Days | 121.15888698
 jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` | Days | 2458970
