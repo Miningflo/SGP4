@@ -1,5 +1,5 @@
-loadtle("./tle.txt").then(tle => {
-    tle.forEach(sat => {
-        sgp4(sat);
-    });
+loadfile("./tle.txt").then(fulltle => {
+    let tle = loadtle(fulltle);
+    console.log(tle);
 });
+

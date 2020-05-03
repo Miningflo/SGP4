@@ -1,4 +1,9 @@
-function sgp4(sat) {
+/**
+ *
+ * @param sat {SingleTle}
+ * @param deltaT
+ */
+function sgp4(sat, deltaT) {
     console.log(sat);
 }
 
@@ -29,17 +34,24 @@ class SingleTle {
 }
 
 /**
- * Load TLE data from path
- * @param path
- * @returns {Promise<Array | SingleTle>}
+ * Parse a whole TLE file
+ * @param fulltle {string}
+ * @returns {Array}
  */
-function loadtle(path){
-    return fetch(path).then(res => res.text()).then(fulltle => {
-        fulltle = fulltle.split("\n");
-        let tles = [];
-        while (fulltle.length) {
-            tles.push(new SingleTle(fulltle.splice(0, 3).join("\n")));
-        }
-        return tles;
-    });
+function loadtle(fulltle){
+    let tlelines = fulltle.split("\n");
+    let tles = [];
+    while (tlelines.length) {
+        tles.push(new SingleTle(tlelines.splice(0, 3).join("\n")));
+    }
+    return tles;
+}
+
+/**
+ * Load file as text
+ * @param path
+ * @returns {Promise<string>}
+ */
+function loadfile(path){
+    return fetch(path).then(res => res.text());
 }
