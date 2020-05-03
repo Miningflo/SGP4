@@ -1,4 +1,6 @@
 # SGP4
+![Project Status: Unfinished](https://img.shields.io/badge/Project_Status-UNFINISHED-red.svg)
+
 JS implementation of the SGP4 algorithm to calculate satellite positions
 
 ## To Do:
