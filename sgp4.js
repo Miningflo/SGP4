@@ -2,6 +2,9 @@ function sgp4(sat) {
     console.log(sat);
 }
 
+/**
+ * This class cointains the decoded data from a single TLE
+ */
 class SingleTle {
     constructor(tle) {
         let lines = tle.split("\n");
@@ -25,6 +28,11 @@ class SingleTle {
     }
 }
 
+/**
+ * Load TLE data from path
+ * @param path
+ * @returns {Promise<Array | SingleTle>}
+ */
 function loadtle(path){
     return fetch(path).then(res => res.text()).then(fulltle => {
         fulltle = fulltle.split("\n");
