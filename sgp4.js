@@ -1,16 +1,13 @@
-/**
- *
- * @param sat {SingleTle}
- * @param deltaT
- */
-function sgp4(sat, deltaT) {
-    console.log(sat);
-}
+const g = 6.674 * Math.pow(10, -11);
+const m = 5.9722 * Math.pow(10, 24);
+const ke = Math.sqrt(g * m);
+const k2 = 5.413080 * Math.pow(10, -4);
 
 /**
  * This class cointains the decoded data from a single TLE
  */
 class SingleTle {
+    // TODO: rename class
     constructor(tle) {
         let lines = tle.split("\n");
         this.satname = lines[0].trim();
@@ -30,6 +27,18 @@ class SingleTle {
         this.anomaly = lines[2].slice(43, 51);
         this.motion = lines[2].slice(52, 63);
         this.revs = lines[2].slice(63, 68);
+    }
+
+    getLonLatatT(t){
+        let pos = this.sgp4(t).pos;
+        // TODO: convert pos from SGP4 to lon/lat
+        return [0, 0];
+
+    }
+
+    sgp4(deltaT){
+        console.log(this);
+        return {pos: "", speed: ""};
     }
 }
 
