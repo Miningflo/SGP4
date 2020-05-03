@@ -25,8 +25,7 @@ function jdep(year, days) {
 /**
  * This class cointains the decoded data from a single TLE
  */
-class SingleTle {
-    // TODO: rename class
+class TLEData {
     constructor(tle) {
         let lines = tle.split("\n");
         this.satname = lines[0].trim();
@@ -56,7 +55,7 @@ class SingleTle {
 
     }
 
-    sgp4(deltaT){
+    sgp4(t) {
         console.log(this);
         let alpha1 = Math.pow(Constants.ke / this.no, 2 / 3);
         let delta1 = (3 / 2) * (Constants.k2 / Math.pow(alpha1, 2)) * ((3 * Math.pow(Math.cos(this.inclo), 2) - 1) / Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2));
@@ -78,7 +77,7 @@ function loadtle(fulltle){
     let tlelines = fulltle.split("\n");
     let tles = [];
     while (tlelines.length) {
-        tles.push(new SingleTle(tlelines.splice(0, 3).join("\n")));
+        tles.push(new TLEData(tlelines.splice(0, 3).join("\n")));
     }
     return tles;
 }

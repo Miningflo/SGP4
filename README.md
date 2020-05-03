@@ -27,3 +27,39 @@ tle_objects.forEach(obj => {
     let position = obj.getLonLatatT(t);
 });
 ```
+
+## Objects:
+### <u>TLEData</u>
+#### Methods of `TLEData` object:
+* `TLEData.constructor(tle-string)`
+  * Variable name | Meaning
+    ------------- | -----
+    this.satname | Name of Satellite
+    -- | --
+    this.satnum | Satellite Number
+    this.classification | Classification (U/C/S)
+    this.epochyear | Epoch Year
+    this.epochdays | Julian Date Fraction
+    this.jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` 
+    this.ndot | Ballistic Coefficient
+    this.nddot | Second Derivative of Mean Motion
+    this.bstar | Drag Term
+    this.elem | Element Set Number
+    --|--
+    this.inclo | Inclination
+    this.nodeo | Right Ascension of the Ascending Node
+    this.ecco | Eccentricity
+    this.argpo | Argument of Perigee
+    this.mo | Mean Anomaly
+    this.no | Mean Motion
+    this.revs | Revolution Number
+* `TLEData.sgp4(t)`
+* `TLEData.getLonLatatT(t)`
+### <u>Constants</u>
+#### Static fields:
+Variable name | Value
+------------- | -----
+g | 6.674 * Math.pow(10, -11);
+m | 5.9722 * Math.pow(10, 24);
+ke | Math.sqrt(this.g * this.m);
+k2 | 5.413080 * Math.pow(10, -4);
