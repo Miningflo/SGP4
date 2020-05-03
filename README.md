@@ -76,12 +76,7 @@ revs | Revolution Number | - | 14235
 jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` | Days | 2458970
 ### Constants
 #### Static fields:
-Variable name | Value
-------------- | -----
-g | 6.674 × 10<sup>-11</sup>
-m | 5.9722 × 10<sup>24</sup>
-ke | sqrt(g * m)
-k2 | 5.413080 × 10<sup>-4</sup>
+See [this](https://github.com/Miningflo/SGP4/blob/master/CONSTANTS.md) ReadMe.
 
 ## Example TLE data:
 ```text
