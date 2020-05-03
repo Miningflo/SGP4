@@ -1,7 +1,13 @@
-const g = 6.674 * Math.pow(10, -11);
-const m = 5.9722 * Math.pow(10, 24);
-const ke = Math.sqrt(g * m);
-const k2 = 5.413080 * Math.pow(10, -4);
+/**
+ * This is the class for constants
+ */
+class Constants {
+    static g = 6.674 * Math.pow(10, -11);
+    static m = 5.9722 * Math.pow(10, 24);
+    static ke = Math.sqrt(this.g * this.m);
+    static k2 = 5.413080 * Math.pow(10, -4);
+}
+
 
 /**
  * This class cointains the decoded data from a single TLE
