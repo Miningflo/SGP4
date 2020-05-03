@@ -8,6 +8,11 @@ JS implementation of the SGP4 algorithm to calculate satellite positions
 - [x] Spending some time with the ReadMe
 
 ## Usage:
+### Include as following:
+```html
+<script src="sgp4.js"></script>
+```
+### Sample usage:
 ```javascript
 // Load a text file into a string
 loadfile("path/to/tle").then(tle => {
