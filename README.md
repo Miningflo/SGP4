@@ -57,7 +57,7 @@ tle_objects.forEach(obj => {
 * `TLEData.sgp4(t)`
   * Returns object like `{pos: a, speed: b}`
 * `TLEData.getLonLatatT(t)`
-  * Returns list `[lon, lat]`
+  * Returns array `[lon, lat]`
 ### Constants
 #### Static fields:
 Variable name | Value
