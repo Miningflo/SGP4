@@ -72,7 +72,7 @@ m | 5.9722 * Math.pow(10, 24);
 ke | Math.sqrt(this.g * this.m);
 k2 | 5.413080 * Math.pow(10, -4);
 
-## Example TLE data
+## Example TLE data:
 ```text
 NOAA 15
 1 25338U 98030A   20121.15888698  .00000050  00000-0  39359-4 0  9998
