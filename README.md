@@ -86,7 +86,7 @@ See [this](https://github.com/Miningflo/SGP4/blob/master/CONSTANTS.md) ReadMe.
 * `loadtle(string)`
   * Loads a text string of TLEs into an array of `TLEData` objects
 * `jdep(year, days)`
-  * Convert a year (YY) and a day (since `1 JAN`) to a Julian Date (number of total days since `01 JAN 4713 BC 12 UTC`)
+  * Convert a year (YY) and a day (since `01 JAN`) to a Julian Date (number of total days since `01 JAN 4713 BC 12 UTC`)
 ## Example TLE data:
 ```text
 NOAA 15
