@@ -37,6 +37,12 @@ class Constants {
         let lsun = 180 - 15 * t;
         return [lsun, bsun];
     }
+
+    static getLonLat(coords) {
+        // TODO: convert pos from SGP4 to lon/lat
+        return [0, 0];
+
+    }
 }
 
 
@@ -64,14 +70,6 @@ class TLEData {
         this.mo = parseFloat(lines[2].slice(43, 51));
         this.no = parseFloat(lines[2].slice(52, 63));
         this.revs = parseInt(lines[2].slice(63, 68));
-    }
-
-    getLonLatatT(t){
-        // TODO: coordinate transform doesn't fit here, make global?
-        let pos = this.sgp4(t).pos;
-        // TODO: convert pos from SGP4 to lon/lat
-        return [0, 0];
-
     }
 
     sgp4(t) {

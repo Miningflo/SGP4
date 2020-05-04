@@ -48,8 +48,6 @@ tle_objects.forEach(obj => {
   * Creates `TLEData` object with TLE string
 * `TLEData.sgp4(t)`
   * Returns object like `{pos: a, speed: b, islit: true | false}`
-* `TLEData.getLonLatatT(t)`
-  * Returns array `[lon, lat]`
 #### Fields of `TLEData` object:
 *Extracted Fields from TLE string*
 
