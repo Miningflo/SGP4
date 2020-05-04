@@ -1,5 +1,6 @@
 # SGP4
 ![Project Status: Unfinished](https://img.shields.io/badge/Project_Status-UNFINISHED-red.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-BLUE.svg)](https://github.com/Miningflo/SGP4/blob/master/LICENSE.md)
 
 JS implementation of the SGP4 algorithm to calculate satellite positions
 
