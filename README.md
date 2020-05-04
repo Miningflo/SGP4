@@ -13,7 +13,7 @@ JS implementation of the SGP4 algorithm to calculate satellite positions
 ## Usage:
 ### Include as following:
 ```html
-<script src="sgp4.js"></script>
+<script src="https://miningflo.github.io/SGP4/sgp4.js"></script>
 ```
 ### Sample usage:
 ```javascript
