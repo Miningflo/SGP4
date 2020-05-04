@@ -9,7 +9,9 @@ k2 | 5.413080 × 10<sup>-4</sup>
 * `Constants.jdep(year, days)`
   * Convert a year (YY) and a day (since `01 JAN`) to a Julian Date (number of total days since `01 JAN 4713 BC 12 UTC`)
 * `Constants.torad(x)`
-  * Convert an angle in degrees to radian
+  * Convert an angle in degrees to radians
+* `Constants.todeg(x)`
+  * Convert an angle in radians to degrees
 * `Constants.getSolarPosition(date)`
   * Get the longitude and latitude of the sun on a given `Date()`
 * `Constants.getLonLatatT(coords)`

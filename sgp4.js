@@ -11,6 +11,10 @@ class Constants {
         return x / 180 * Math.PI;
     }
 
+    static todeg(x) {
+        return x * 180 / Math.PI;
+    }
+
     /**
      * Julian date of epoch
      * @param year
