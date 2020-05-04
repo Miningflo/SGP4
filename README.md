@@ -30,14 +30,8 @@ tle_objects.forEach(obj => {
     let sgp4 = obj.sgp4(t);
     let postion = sgp4.pos;
     let speed = sgp4.speed;
-    let islit = sgp4.islit;
-});
-
-// get LON/LAT position of TLE object at time T
-// T is a js Date object
-tle_objects.forEach(obj => {
-    let t = new Date();
-    let position = obj.getLonLatatT(t);
+    let islit = Constants.isLit(postion, t);
+    let lonLat = Constants.getLonLat(postion);
 });
 ```
 
@@ -47,7 +41,7 @@ tle_objects.forEach(obj => {
 * `TLEData.constructor(tle-string)`
   * Creates `TLEData` object with TLE string
 * `TLEData.sgp4(t)`
-  * Returns object like `{pos: a, speed: b, islit: true | false}`
+  * Returns object like `{pos: a, speed: b}`
 #### Fields of `TLEData` object:
 *Extracted Fields from TLE string*
 

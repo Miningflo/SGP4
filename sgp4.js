@@ -47,6 +47,10 @@ class Constants {
         return [0, 0];
 
     }
+
+    static isLit(coords, date) {
+        // TODO: calculate if sat at location is lit at date
+    }
 }
 
 
@@ -85,7 +89,7 @@ class TLEData {
         let nd20 = this.ndot / (1 + delta0);
         let ad20 = alpha0 / (1 - delta0);
 
-        return {pos: "", speed: "", islit: "true | false"};
+        return {pos: "", speed: ""};
     }
 }
 

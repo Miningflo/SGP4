@@ -16,3 +16,5 @@ k2 | 5.413080 × 10<sup>-4</sup>
   * Get the longitude and latitude of the sun on a given `Date()`
 * `Constants.getLonLatatT(coords)`
   * Convert SGP4 coordinates in array `[lon, lat]`
+* `Constants.isLit(coords, date)`
+  * Check if a certain position is lit by the sun at a given time `true | false`
