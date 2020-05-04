@@ -67,7 +67,10 @@ revs | Revolution Number | - | 14235
 **Other (calculated) fields** |
 jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` | Days | 2458970
 ### Constants
-* See [this](https://github.com/Miningflo/SGP4/blob/master/CONSTANTS.md) ReadMe.
+#### Static fields:
+* Click [here](https://github.com/Miningflo/SGP4/blob/master/CONSTANTS.md#static-fields) for more info.
+#### Static methods:
+* Click [here](https://github.com/Miningflo/SGP4/blob/master/CONSTANTS.md#static-methods) for more info.
 
 ## Functions:
 * `loadfile(path)`
