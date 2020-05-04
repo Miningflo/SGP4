@@ -39,6 +39,7 @@ class Constants {
         let t = date.getUTCHours() + date.getUTCMinutes() / 60 + date.getUTCSeconds() / 3600 + date.getUTCMilliseconds() / 3600000;
         let bsun = delta;
         let lsun = 180 - 15 * t;
+        // TODO: Use other coordinate system with distance from earth included
         return [lsun, bsun];
     }
 
@@ -50,6 +51,7 @@ class Constants {
 
     static isLit(coords, date) {
         // TODO: calculate if sat at location is lit at date
+        let sunloc = this.getSolarPosition(date);
     }
 }
 
