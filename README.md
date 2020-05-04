@@ -25,11 +25,11 @@ let tle_objects = loadtle("tle string");
 
 tle_objects.forEach(obj => {
     let t = new Date();
-    let sgp4 = obj.sgp4(t); // do SGP4 calculations
-    let postion = sgp4.pos; // get position
-    let speed = sgp4.speed; // get speed
-    let islit = Constants.isLit(postion, t); // Check if a given point is lit at a given time
-    let lonLat = Constants.getLonLat(postion); // Convert SGP4 coordinates to Lon/Lat
+    let sgp4 = obj.sgp4(t);                     // do SGP4 calculations
+    let postion = sgp4.pos;                     // get position
+    let speed = sgp4.speed;                     // get speed
+    let islit = Constants.isLit(postion, t);    // Check if a given point is lit at a given time
+    let lonLat = Constants.getLonLat(postion);  // Convert SGP4 coordinates to Lon/Lat
 });
 ```
 
