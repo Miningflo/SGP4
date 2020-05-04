@@ -5,7 +5,8 @@ JS implementation of the SGP4 algorithm to calculate satellite positions
 
 ## To Do:
 - [ ] Implement SGP4
-- [x] Spending some time with the ReadMe
+- [x] Give the ReadMe some love :heart:
+- [ ] Update TLE file parser
 
 ## Usage:
 ### Include as following:
@@ -29,6 +30,7 @@ tle_objects.forEach(obj => {
     let sgp4 = obj.sgp4(t);
     let postion = sgp4.pos;
     let speed = sgp4.speed;
+    let islit = sgp4.islit;
 });
 
 // get LON/LAT position of TLE object at time T
@@ -45,7 +47,7 @@ tle_objects.forEach(obj => {
 * `TLEData.constructor(tle-string)`
   * Creates `TLEData` object with TLE string
 * `TLEData.sgp4(t)`
-  * Returns object like `{pos: a, speed: b}`
+  * Returns object like `{pos: a, speed: b, islit: true | false}`
 * `TLEData.getLonLatatT(t)`
   * Returns array `[lon, lat]`
 #### Fields of `TLEData` object:
@@ -78,6 +80,13 @@ jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` | Days | 2458970
 #### Static fields:
 See [this](https://github.com/Miningflo/SGP4/blob/master/CONSTANTS.md) ReadMe.
 
+## Functions:
+* `loadfile(path)`
+  * Returns a text string of file contents as promise
+* `loadtle(string)`
+  * Loads a text string of TLEs into an array of `TLEData` objects
+* `jdep(year, days)`
+  * Convert a year (YY) and a day (since `1 JAN`) to a Julian Date (number of total days since `01 JAN 4713 BC 12 UTC`)
 ## Example TLE data:
 ```text
 NOAA 15

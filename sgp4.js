@@ -49,6 +49,7 @@ class TLEData {
     }
 
     getLonLatatT(t){
+        // TODO: coordinate transform doesn't fit here, make global?
         let pos = this.sgp4(t).pos;
         // TODO: convert pos from SGP4 to lon/lat
         return [0, 0];
@@ -64,7 +65,7 @@ class TLEData {
         let nd20 = this.ndot / (1 + delta0);
         let ad20 = alpha0 / (1 - delta0);
 
-        return {pos: "", speed: ""};
+        return {pos: "", speed: "", islit: "true | false"};
     }
 }
 
@@ -76,6 +77,7 @@ class TLEData {
 function loadtle(fulltle){
     let tlelines = fulltle.split("\n");
     let tles = [];
+    // TODO: Update parser to work with 2 line TLE
     while (tlelines.length) {
         tles.push(new TLEData(tlelines.splice(0, 3).join("\n")));
     }
