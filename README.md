@@ -77,7 +77,6 @@ revs | Revolution Number | - | 14235
 **Other (calculated) fields** |
 jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` | Days | 2458970
 ### Constants
-#### Static fields:
 * See [this](https://github.com/Miningflo/SGP4/blob/master/CONSTANTS.md) ReadMe.
 
 ## Functions:
@@ -85,8 +84,6 @@ jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` | Days | 2458970
   * Returns a text string of file contents as promise
 * `loadtle(string)`
   * Loads a text string of TLEs into an array of `TLEData` objects
-* `jdep(year, days)`
-  * Convert a year (YY) and a day (since `01 JAN`) to a Julian Date (number of total days since `01 JAN 4713 BC 12 UTC`)
 ## Example TLE data:
 ```text
 NOAA 15
