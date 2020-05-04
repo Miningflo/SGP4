@@ -51,7 +51,7 @@ class TLEData {
         this.classification = lines[1].charAt(7);
         this.epochyear = parseInt(lines[1].slice(18, 20));
         this.epochdays = parseFloat(lines[1].slice(20, 32));
-        this.jdsatepoch = jdep(this.epochyear, this.epochdays);
+        this.jdsatepoch = Constants.jdep(this.epochyear, this.epochdays);
         this.ndot = parseFloat(lines[1].slice(33, 43));
         this.nddot = lines[1].slice(44, 52);
         this.bstar = lines[1].slice(53, 61);
