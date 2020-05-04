@@ -4,9 +4,9 @@
 JS implementation of the SGP4 algorithm to calculate satellite positions
 
 ## To Do:
-- [ ] Implement SGP4
+- [ ] Implement SGP4 :alien::green_heart:
 - [x] Give the ReadMe some love :heart:
-- [ ] Update TLE file parser
+- [ ] Update TLE file parser :octocat:
 
 ## Usage:
 ### Include as following:
