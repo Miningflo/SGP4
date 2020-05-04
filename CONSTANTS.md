@@ -14,7 +14,7 @@ k2 | 5.413080 × 10<sup>-4</sup>
   * Convert an angle in radians to degrees
 * `Constants.getSolarPosition(date)`
   * Get the longitude and latitude of the sun on a given `Date()`
-* `Constants.getLonLatatT(coords)`
+* `Constants.getLonLat(coords)`
   * Convert SGP4 coordinates in array `[lon, lat]`
 * `Constants.isLit(coords, date)`
   * Check if a certain position is lit by the sun at a given time `true | false`

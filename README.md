@@ -23,15 +23,13 @@ loadfile("path/to/tle").then(tle => {
 // get TLE objects from TLE string
 let tle_objects = loadtle("tle string");
 
-// get Position and speed of TLE object at time T
-// T is a js Date object
 tle_objects.forEach(obj => {
     let t = new Date();
-    let sgp4 = obj.sgp4(t);
-    let postion = sgp4.pos;
-    let speed = sgp4.speed;
-    let islit = Constants.isLit(postion, t);
-    let lonLat = Constants.getLonLat(postion);
+    let sgp4 = obj.sgp4(t); // do SGP4 calculations
+    let postion = sgp4.pos; // get position
+    let speed = sgp4.speed; // get speed
+    let islit = Constants.isLit(postion, t); // Check if a given point is lit at a given time
+    let lonLat = Constants.getLonLat(postion); // Convert SGP4 coordinates to Lon/Lat
 });
 ```
 
