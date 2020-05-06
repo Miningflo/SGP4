@@ -19,8 +19,8 @@ classification | Classification (U/C/S) | - | "U"
 epochyear | Epoch Year | YY | 20
 epochdays | Julian Date Fraction | Days | 121.15888698
 ndot | Ballistic Coefficient | revs/day² | 5e-7
-nddot | Second Derivative of Mean Motion | revs/day³ | 00000-0
-bstar | Drag Term | radii<sup>-1</sup> | 39359-4
+nddot | Second Derivative of Mean Motion | revs/day³ | 0
+bstar | Drag Term | radii<sup>-1</sup> | 3.9359
 elem | Element Set Number | - | 999
 **Line 2** |
 inclo | Inclination | degrees | 98.7214
