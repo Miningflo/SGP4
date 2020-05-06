@@ -29,6 +29,7 @@ Revolution Number | Total number of revolutions at epoch
 SGP4 is a simplified general perturbations model. It applies to near earth objects with an orbital period of less than **225** minutes.
 It is used to calculate orbital state vectors of satellites and space debris.
 ### How do we calculate this SGP4-thing?
+#### At creation of a `TLEData` object, we do some first calculations:
 *See [Constants.md](CONSTANTS.md#static-fields) for more info on the Constants referenced below*
 
 Variable name | Value
@@ -39,6 +40,9 @@ Variable name | Value
 δ<sub>0</sub> | ![equation](Formulas/delta0.png)
 n"<sub>0</sub> | ![equation](Formulas/nd20.png)
 α"<sub>0</sub> | ![equation](Formulas/alphad20.png)
+
+#### When the `sgp4(time)`-method is called:
+*Here wel calculate the rest of the algorithm with the desired time parameter*
 
 #### Sources:
 * [SPACETRACK REPORT NO. 3](http://celestrak.com/NORAD/documentation/spacetrk.pdf) *Retrieved 6 May 2020*

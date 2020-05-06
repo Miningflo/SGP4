@@ -2,12 +2,16 @@
 #### Methods of `TLEData` object:
 * `TLEData.constructor(tle-string)`
   * Creates `TLEData` object with TLE string
-  * TODO: Add info about constructor
+  * The constructor takes a String with exactly one (1) TLE, a.k.a 1 satellite
+  * The constructor extracts data from the TLE [(What is TLE?)](SGP4.md#what-is-tle)
+  * The constructor does a first set of SGP4 calculations that are the same every time
 * `TLEData.sgp4(t)`
   * Returns object like `{pos: a, speed: b}`
-  * TODO: Add info about SGP4
+  * [What is SGP4?](SGP4.md#what-is-sgp4)
+  * [How do we calculate SGP4?](SGP4.md#how-do-we-calculate-this-sgp4-thing)
 #### Fields of `TLEData` object:
 *Extracted Fields from TLE string*
+![TLE-example](https://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/SSOP_Help/2line.gif) *Retrieved 6 May 2020*
 
 Variable name | Meaning | Units | Example | type
 ------------- | ------- | :-----: | -------: | :---:
