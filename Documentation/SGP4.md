@@ -30,7 +30,7 @@ SGP4 is a simplified general perturbations model. It applies to near earth objec
 It is used to calculate orbital state vectors of satellites and space debris.
 ### How do we calculate this SGP4-thing?
 #### At creation of a `TLEData` object, we do some first calculations:
-*See [Constants.md](CONSTANTS.md#static-fields) for more info on the Constants referenced below*
+*See [CONSTANTS.md](CONSTANTS.md#static-fields) for more info on the Constants referenced below*
 
 Variable name | Value
 ------------- | -----
@@ -42,7 +42,7 @@ n"<sub>0</sub> | ![equation](Formulas/nd20.png)
 α"<sub>0</sub> | ![equation](Formulas/alphad20.png)
 
 #### When the `sgp4(time)`-method is called:
-*Here wel calculate the rest of the algorithm with the desired time parameter*
+*Here we calculate the rest of the algorithm with the desired time parameter*
 
 #### Sources:
 * [SPACETRACK REPORT NO. 3](http://celestrak.com/NORAD/documentation/spacetrk.pdf) *Retrieved 6 May 2020*
