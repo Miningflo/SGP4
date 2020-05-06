@@ -68,19 +68,20 @@ class Constants {
 
     static getLonLat(coords) {
         // TODO: convert pos from SGP4 to lon/lat
-        return [0, 0];
+        return [10, 10];
 
     }
 
     static isLit(coords, date) {
         // TODO: calculate if sat at location is lit at date
         let sunloc = this.getSolarPosition(date);
+        return true;
     }
 }
 
 
 /**
- * This class cointains the decoded data from a single TLE
+ * This class contains the decoded data from a single TLE
  */
 class TLEData {
     constructor(tle) {
