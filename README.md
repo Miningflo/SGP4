@@ -4,7 +4,7 @@
 
 JS implementation of the SGP4 algorithm to calculate satellite positions
 
-[Read more](wiki/SGP4) about our implementation of SGP4
+[Read more](../../wiki/SGP4) about our implementation of SGP4
 
 ## To Do:
 - [ ] Implement SGP4 :alien:
@@ -39,15 +39,15 @@ tle_objects.forEach(obj => {
 
 ## Objects:
 ### TLEData
-#### [Methods](wiki/TLEData#methods-of-tledata-object) of `TLEData` object:
+#### [Methods](../../wiki/TLEData#methods-of-tledata-object) of `TLEData` object:
 * `TLEData.constructor(tle-string)`
   * Creates `TLEData` object with TLE string
 * `TLEData.sgp4(t)`
   * Returns object like `{pos: a, speed: b}`
-#### [Fields](wiki/TLEData#fields-of-tledata-object) of `TLEData` object
+#### [Fields](../../wiki/TLEData#fields-of-tledata-object) of `TLEData` object
 ### Constants
-#### [Static fields](wiki/Constants#static-fields) of `Constants` object
-#### [Static methods](wiki/Constants#static-methods) of `Constants` object
+#### [Static fields](../../wiki/Constants#static-fields) of `Constants` object
+#### [Static methods](../../wiki/Constants#static-methods) of `Constants` object
 
 ## Functions:
 * `loadfile(path)`
