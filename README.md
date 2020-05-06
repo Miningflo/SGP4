@@ -37,6 +37,7 @@ tle_objects.forEach(obj => {
 
 ## Objects:
 ### TLEData
+* Click [here](https://github.com/Miningflo/SGP4/blob/master/Documentation/TLEData.md) for more info.
 #### Methods of `TLEData` object:
 * `TLEData.constructor(tle-string)`
   * Creates `TLEData` object with TLE string
@@ -70,9 +71,9 @@ revs | Revolution Number | - | 14235
 jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` | Days | 2458970
 ### Constants
 #### Static fields:
-* Click [here](https://github.com/Miningflo/SGP4/blob/master/CONSTANTS.md#static-fields) for more info.
+* Click [here](https://github.com/Miningflo/SGP4/blob/master/Documentation/CONSTANTS.md#static-fields) for more info.
 #### Static methods:
-* Click [here](https://github.com/Miningflo/SGP4/blob/master/CONSTANTS.md#static-methods) for more info.
+* Click [here](https://github.com/Miningflo/SGP4/blob/master/Documentation/CONSTANTS.md#static-methods) for more info.
 
 ## Functions:
 * `loadfile(path)`
