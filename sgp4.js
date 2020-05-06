@@ -105,7 +105,7 @@ class TLEData {
         this.no = parseFloat(lines[2].slice(52, 63));
         this.revs = parseInt(lines[2].slice(63, 68));
 
-        // TODO: move time-independant calculations here
+        // TODO: move time-independent calculations here
         let alpha1 = Math.pow(Constants.ke / this.no, 2 / 3);
         let delta1 = (3 / 2) * (Constants.k2 / Math.pow(alpha1, 2)) * ((3 * Math.pow(Math.cos(this.inclo), 2) - 1) / Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2));
         let alpha0 = alpha1 * (1 - 1 / 3 * delta1 - delta1 ** 2 - 134 / 81 * (delta1 ** 3));
