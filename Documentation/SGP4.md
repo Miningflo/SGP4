@@ -24,7 +24,7 @@ Argument of Perigee | Angle between ascending node and closest point to earth
 Mean Anomaly | The angle between the periapsis and where the object is now
 Mean Motion | Average number of revolutions per day
 Revolution Number | Total number of revolutions at epoch
-![Diagram of orbital elements](https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Orbit1.svg/300px-Orbit1.svg.png)
+![Diagram of orbital elements](https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Orbit1.svg/300px-Orbit1.svg.png) | *Retrieved 6 May 2020*
 ### What is SGP4?
 SGP4 is a simplified general perturbations model. It applies to near earth objects with an orbital period of less than **225** minutes.
 It is used to calculate orbital state vectors of satellites and space debris.
@@ -41,6 +41,6 @@ n"<sub>0</sub> | ![equation](Formulas/nd20.png)
 α"<sub>0</sub> | ![equation](Formulas/alphad20.png)
 
 #### Sources:
-* [SPACETRACK REPORT NO. 3](http://celestrak.com/NORAD/documentation/spacetrk.pdf)
-* [Online LaTeX editor](https://www.codecogs.com/latex/eqneditor.php)
-* [Simplified perturbations models](https://en.wikipedia.org/wiki/Simplified_perturbations_models)
+* [SPACETRACK REPORT NO. 3](http://celestrak.com/NORAD/documentation/spacetrk.pdf) *Retrieved 6 May 2020*
+* [Online LaTeX editor](https://www.codecogs.com/latex/eqneditor.php) *Retrieved 6 May 2020*
+* [Simplified perturbations models](https://en.wikipedia.org/wiki/Simplified_perturbations_models) *Retrieved 6 May 2020*

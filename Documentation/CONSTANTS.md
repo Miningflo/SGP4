@@ -28,4 +28,4 @@ Symbol | Description
 J<sub>2</sub> | The second gravitational zonal harmonic of the Earth
 α<sub>E</sub> | The equatorial radius of the Earth
 #### Sources:
-* [SPACETRACK REPORT NO. 3](http://celestrak.com/NORAD/documentation/spacetrk.pdf)
+* [SPACETRACK REPORT NO. 3](http://celestrak.com/NORAD/documentation/spacetrk.pdf) *Retrieved 6 May 2020*
