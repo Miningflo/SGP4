@@ -30,5 +30,9 @@ argpo | Argument of Perigee | degrees | 48.3965
 mo | Mean Anomaly | degrees | 311.8172
 no | Mean Motion | orbits/day | 14.25961394
 revs | Revolution Number | - | 14235
-**Other (calculated) fields** |
+
+*Other (calculated) fields*
+
+Variable name | Meaning | Units | Example
+------------- | ------- | :-----: | -------:
 jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` | Days | 2458970

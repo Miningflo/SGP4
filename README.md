@@ -37,43 +37,15 @@ tle_objects.forEach(obj => {
 
 ## Objects:
 ### TLEData
-* Click [here](https://github.com/Miningflo/SGP4/blob/master/Documentation/TLEData.md) for more info.
-#### Methods of `TLEData` object:
+#### [Methods](Documentation/TLEData.md#methods-of-tledata-object) of `TLEData` object:
 * `TLEData.constructor(tle-string)`
   * Creates `TLEData` object with TLE string
 * `TLEData.sgp4(t)`
   * Returns object like `{pos: a, speed: b}`
-#### Fields of `TLEData` object:
-*Extracted Fields from TLE string*
-
-Variable name | Meaning | Units | Example
-------------- | ------- | :-----: | -------:
-**Line 0** |
-satname | Name of Satellite | - | "NOAA 15"
-**Line 1** |
-satnum | Satellite Number | - | 25338
-classification | Classification (U/C/S) | - | "U"
-epochyear | Epoch Year | YY | 20
-epochdays | Julian Date Fraction | Days | 121.15888698
-ndot | Ballistic Coefficient | revs/day² | 5e-7
-nddot | Second Derivative of Mean Motion | revs/day³ | 00000-0
-bstar | Drag Term | radii<sup>-1</sup> | 39359-4
-elem | Element Set Number | - | 999
-**Line 2** |
-inclo | Inclination | degrees | 98.7214
-nodeo | Right Ascension of the Ascending Node | degrees | 146.4452
-ecco | Eccentricity | between 0 and 1 | 0.0011191
-argpo | Argument of Perigee | degrees | 48.3965
-mo | Mean Anomaly | degrees | 311.8172
-no | Mean Motion | orbits/day | 14.25961394
-revs | Revolution Number | - | 14235
-**Other (calculated) fields** |
-jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` | Days | 2458970
+#### [Fields](Documentation/TLEData.md#fields-of-tledata-object) of `TLEData` object
 ### Constants
-#### Static fields:
-* Click [here](https://github.com/Miningflo/SGP4/blob/master/Documentation/CONSTANTS.md#static-fields) for more info.
-#### Static methods:
-* Click [here](https://github.com/Miningflo/SGP4/blob/master/Documentation/CONSTANTS.md#static-methods) for more info.
+#### [Static fields](Documentation/CONSTANTS.md#static-fields) of `Constants` object
+#### [Static methods](Documentation/CONSTANTS.md#static-methods) of `Constants` object
 
 ## Functions:
 * `loadfile(path)`
