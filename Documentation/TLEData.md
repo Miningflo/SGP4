@@ -36,3 +36,5 @@ revs | Revolution Number | - | 14235 | `int`
 Variable name | Meaning | Units | Example | type
 ------------- | ------- | :-----: | -------: | :---:
 jdsatepoch | Days since `01 JAN 4713 BC 12 UTC` | Days | 2458970 | `int`
+
+#### [Read more](SGP4.md) about SGP4
