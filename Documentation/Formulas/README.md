@@ -1,0 +1,1 @@
+These formulas are stored in the repository because the LaTeX cdn is way too unreliable
