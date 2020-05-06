@@ -77,6 +77,10 @@ class Constants {
         let sunloc = this.getSolarPosition(date);
         return true;
     }
+
+    static parse(number) {
+        return parseFloat(number.substr(0, 6) + "e" + number.substr(-2));
+    }
 }
 
 
@@ -93,8 +97,8 @@ class TLEData {
         this.epochdays = parseFloat(lines[1].slice(20, 32));
         this.jdsatepoch = Constants.jdep(this.epochyear, this.epochdays);
         this.ndot = parseFloat(lines[1].slice(33, 43));
-        this.nddot = lines[1].slice(44, 52);
-        this.bstar = lines[1].slice(53, 61);
+        this.nddot = Constants.parse(lines[1].slice(44, 52));
+        this.bstar = Constants.parse(lines[1].slice(53, 61));
         this.elem = parseInt(lines[1].slice(64, 68));
 
         this.inclo = parseFloat(lines[2].slice(8, 16));

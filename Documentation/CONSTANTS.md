@@ -18,3 +18,5 @@ k2 | 5.413080 × 10<sup>-4</sup>
   * Convert SGP4 coordinates in array `[lon, lat]`
 * `Constants.isLit(coords, date)`
   * Check if a certain position is lit by the sun at a given time `true | false`
+* `Constants.parse(xxxx-n)`
+  * Parse the `xxxx-n`-format given in TLE to `xxxx`<sup>`-n`</sup>
