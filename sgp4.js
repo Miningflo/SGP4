@@ -121,16 +121,16 @@ class TLEData {
         this.ad20sq = Math.pow(this.ad20, 2);
         this.ad20sq4 = Math.pow(this.ad20, 4);
         let s = Constants.s;
-        let qoms2t = Constants.qoms2t;
+        this.qoms2t = Constants.qoms2t;
         this.hp = alpha1 * (1 - this.ecco) - 6371; // TODO: is this correct?
 
         if (this.hp < 98) {
             s = 20 / Constants.xkmper + Constants.ae;
-            qoms2t = Math.pow(Math.pow(qoms2t, 1 / 4) + Constants.s - s, 4);
+            this.qoms2t = Math.pow(Math.pow(this.qoms2t, 1 / 4) + Constants.s - s, 4);
 
         } else if (this.hp < 156) {
             s = this.ad20 * (1 - this.ecco) - s + Constants.ae;
-            qoms2t = Math.pow(Math.pow(qoms2t, 1 / 4) + Constants.s - s, 4);
+            this.qoms2t = Math.pow(Math.pow(this.qoms2t, 1 / 4) + Constants.s - s, 4);
         }
 
         this.teta = Math.cos(Constants.torad(this.inclo));
@@ -138,43 +138,43 @@ class TLEData {
         this.tetasq4 = Math.pow(this.teta, 4);
         let epsilon = 1 / (this.ad20 - s);
         let epsilonsq = Math.pow(epsilon, 2);
-        let epsilonsq4 = Math.pow(epsilon, 4);
+        this.epsilonsq4 = Math.pow(epsilon, 4);
         this.beta0 = Math.sqrt(1 - Math.pow(this.ecco, 2));
-        let beta0sq = Math.pow(this.beta0, 2);
+        this.beta0sq = Math.pow(this.beta0, 2);
         this.beta0sq4 = Math.pow(this.beta0, 4);
         this.beta0sq8 = Math.pow(this.beta0, 8);
-        let eta = this.ad20 * this.ecco * epsilon;
-        let etasq = Math.pow(eta, 2);
-        let etasq3 = Math.pow(eta, 3);
+        this.eta = this.ad20 * this.ecco * epsilon;
+        let etasq = Math.pow(this.eta, 2);
+        let etasq3 = Math.pow(this.eta, 3);
 
-        let c2 = qoms2t * epsilonsq4 * this.nd20 * Math.pow(1 - etasq, -7 / 2) *
+        let c2 = this.qoms2t * this.epsilonsq4 * this.nd20 * Math.pow(1 - etasq, -7 / 2) *
             (
-                this.ad20 * (1 + 3 / 2 * etasq + 4 * this.ecco * eta + this.ecco * etasq3)
+                this.ad20 * (1 + 3 / 2 * etasq + 4 * this.ecco * this.eta + this.ecco * etasq3)
                 + 3 / 2 * (Constants.k2 * epsilon) / (1 - etasq) *
                 (-1 / 2 + 3 / 2 * this.tetasq) *
-                (8 + 24 * etasq + 3 * Math.pow(eta, 4))
+                (8 + 24 * etasq + 3 * Math.pow(this.eta, 4))
             );
-        let c1 = this.bstar * c2;
-        let c3 = (qoms2t * Math.pow(epsilon, 5) * Constants.a30 * this.nd20 * Constants.ae * Math.sin(Constants.torad(this.inclo))) /
+        this.c1 = this.bstar * c2;
+        this.c3 = (this.qoms2t * Math.pow(epsilon, 5) * Constants.a30 * this.nd20 * Constants.ae * Math.sin(Constants.torad(this.inclo))) /
             (Constants.k2 * this.ecco);
-        let c4 =
-            2 * this.nd20 * qoms2t * epsilonsq4 * this.ad20 * beta0sq * Math.pow(1 - etasq, -7 / 2) *
+        this.c4 =
+            2 * this.nd20 * this.qoms2t * this.epsilonsq4 * this.ad20 * this.beta0sq * Math.pow(1 - etasq, -7 / 2) *
             (
-                (2 * eta * (1 + this.ecco * eta) + 1 / 2 * this.ecco + 1 / 2 * etasq3)
+                (2 * this.eta * (1 + this.ecco * this.eta) + 1 / 2 * this.ecco + 1 / 2 * etasq3)
                 - (2 * Constants.k2 * epsilon) / (this.ad20 * (1 - etasq)) *
                 (
                     3 * (1 - 3 * this.tetasq) *
-                    (1 + 3 / 2 * etasq - 2 * this.ecco * eta - 1 / 2 * this.ecco * etasq3) +
-                    3 / 4 * (1 - this.tetasq) * (2 * etasq - this.ecco * eta - this.ecco * etasq3) *
+                    (1 + 3 / 2 * etasq - 2 * this.ecco * this.eta - 1 / 2 * this.ecco * etasq3) +
+                    3 / 4 * (1 - this.tetasq) * (2 * etasq - this.ecco * this.eta - this.ecco * etasq3) *
                     Math.cos(Constants.torad(2 * this.argpo))
                 )
             );
-        let c5 =
-            2 * qoms2t * epsilonsq4 * this.ad20 * beta0sq * Math.pow(1 - etasq, -7 / 2) *
-            (1 + 11 / 4 * eta * (eta + this.ecco) + this.ecco * etasq3);
-        let d2 = 4 * this.ad20 * epsilon * Math.pow(c1, 2);
-        let d3 = 4 / 3 * this.ad20 * epsilonsq * (17 * this.ad20 + s) * Math.pow(c1, 3);
-        let d4 = 2 / 3 * this.ad20 * Math.pow(epsilon, 3) * (221 * this.ad20 + 31 * s) * Math.pow(c1, 4);
+        this.c5 =
+            2 * this.qoms2t * this.epsilonsq4 * this.ad20 * this.beta0sq * Math.pow(1 - etasq, -7 / 2) *
+            (1 + 11 / 4 * this.eta * (this.eta + this.ecco) + this.ecco * etasq3);
+        this.d2 = 4 * this.ad20 * epsilon * Math.pow(this.c1, 2);
+        this.d3 = 4 / 3 * this.ad20 * epsilonsq * (17 * this.ad20 + s) * Math.pow(this.c1, 3);
+        this.d4 = 2 / 3 * this.ad20 * Math.pow(epsilon, 3) * (221 * this.ad20 + 31 * s) * Math.pow(this.c1, 4);
     }
 
     sgp4(t) {
@@ -204,6 +204,56 @@ class TLEData {
                 ) +
                 (5 * Constants.k4 * this.teta * (3 - 7 * this.tetasq)) / (2 * this.ad20sq4 * this.beta0sq8)
             ) * this.nd20 * deltat;
+        let deltaw = this.bstar * this.c3 * Math.cos(Constants.torad(this.argpo)) * deltat;
+        let deltam = -2 / 3 * this.qoms2t * this.bstar * this.epsilonsq4 * (Constants.ae) / (this.ecco * this.eta) *
+            (
+                Math.pow(1 + this.eta * Math.cos(Constants.torad(mdf)), 3) -
+                Math.pow(1 + this.eta * Math.cos(Constants.torad(this.mo)), 3)
+            );
+        let mp = mdf;
+        let w = wdf;
+        let o = odf - 21 / 2 * (this.nd20 * Constants.k2 * this.teta) / (this.ad20sq * this.beta0sq) * this.c1 * Math.pow(deltat, 2);
+        let e = this.ecco - this.bstar * this.c4 * deltat;
+        let a, l;
+
+        if (this.hp < 220) {
+            a = this.ad20 * Math.pow(1 - this.c1 * deltat, 2);
+            l = mp + w + o + this.nd20 * (3 / 2 * this.c1 * Math.pow(deltat, 2));
+        } else {
+            mp = mp + deltaw + deltam;
+            w = w - deltaw - deltam;
+            e = e - this.bstar * this.c5 * (Math.sin(Constants.torad(mp)) - Math.sin(Constants.torad(this.mo)));
+            a = this.ad20 * Math.pow(
+                1 -
+                this.c1 * deltat -
+                this.d2 * Math.pow(deltat, 2) -
+                this.d3 * Math.pow(deltat, 3) -
+                this.d4 * Math.pow(deltat, 4),
+                2);
+            l = mp + w + o + this.nd20 * (
+                3 / 2 * this.c1 * Math.pow(deltat, 2) +
+                (this.d2 + 2 * Math.pow(this.c1, 2)) * Math.pow(deltat, 3) +
+                1 / 4 * (3 * this.d3 + 12 * this.c1 * this.d2 + 10 * Math.pow(this.c1, 3)) * Math.pow(deltat, 4) +
+                1 / 5 * (3 * this.d4 +
+                    12 * this.c1 * this.d3 +
+                    6 * Math.pow(this.d2, 2) +
+                    30 * Math.pow(this.c1, 2) * this.d2 +
+                    15 * Math.pow(this.c1, 4)
+                ) * Math.pow(deltat, 5)
+            );
+        }
+        let beta = Math.sqrt(1 - Math.pow(e, 2));
+        let n = Constants.ke / Math.pow(a, 3 / 2);
+
+        let axn = e * Math.cos(Constants.torad(w));
+        let ll = (Constants.a30 * Math.sin(Constants.torad(this.inclo))) / (8 * Constants.k2 * a * Math.pow(beta, 2)) *
+            (axn) *
+            ((3 + 5 * this.teta) / (1 + this.teta));
+        let aynl = (Constants.a30 * Math.sin(Constants.torad(this.inclo))) / (4 * Constants.k2 * a * Math.pow(beta, 2));
+        let lt = l + ll;
+        let ayn = e * Math.sin(Constants.torad(w)) + aynl;
+
+
         return {pos: "", speed: ""};
     }
 }
@@ -213,7 +263,7 @@ class TLEData {
  * @param fulltle {string}
  * @returns {Array}
  */
-function loadtle(fulltle){
+function loadtle(fulltle) {
     fulltle = fulltle.replace(/\s*[\r\n]$/gm, "");
     let tlelines = fulltle.split("\n");
     let res = [];
