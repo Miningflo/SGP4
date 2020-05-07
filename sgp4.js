@@ -27,12 +27,14 @@
 class Constants {
     static ke = 8681663.653; // TODO: find out why it's this value
     static k2 = 5.413080E-4; // value given by NO. 3
+    static k2sq = Math.pow(5.413080E-4, 2); // value given by NO. 3
     static s = 1.01222928; // TODO: correct?
     static xkmper = 6378.135; // value given by NO. 3
     static ae = 6378; // TODO: are we sure?
     static qoms2t = 1.88027916E-9; // value given by NO. 3
     static j3 = -.253881E-5; // value given by NO. 3
     static a30 = -this.j3 * Math.pow(this.ae, 3); // value given by NO. 3
+    static k4 = .62098875E-6;
 
     static torad(x) {
         return x / 180 * Math.PI;
@@ -42,17 +44,12 @@ class Constants {
         return x * 180 / Math.PI;
     }
 
-    /**
-     * Julian date of epoch
-     * @param year
-     * @param days
-     * @returns {number}
-     */
-    static jdep(year, days) {
+    static epochdate(year, days) {
         let yr = (year < 57) ? year + 2000 : year + 1900;
         let date = new Date(yr, 0, 1);
         date.setDate(date.getDate() + days);
-        return Math.floor((date.getTime() / 1000 / 60 / 60 / 24) + 2440587.5);
+        console.log(date);
+        return date;
     }
 
     static getSolarPosition(date) {
@@ -101,7 +98,7 @@ class TLEData {
         this.classification = lines[1].charAt(7);
         this.epochyear = parseInt(lines[1].slice(18, 20));
         this.epochdays = parseFloat(lines[1].slice(20, 32));
-        this.jdsatepoch = Constants.jdep(this.epochyear, this.epochdays);
+        this.epochdate = Constants.epochdate(this.epochyear, this.epochdays);
         this.ndot = parseFloat(lines[1].slice(33, 43));
         this.nddot = Constants.parse(lines[1].slice(44, 52));
         this.bstar = Constants.parse(lines[1].slice(53, 61));
@@ -119,62 +116,94 @@ class TLEData {
         let delta1 = (3 / 2) * (Constants.k2 / Math.pow(alpha1, 2)) * ((3 * Math.pow(Math.cos(this.inclo), 2) - 1) / Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2));
         let alpha0 = alpha1 * (1 - 1 / 3 * delta1 - Math.pow(delta1, 2) - 134 / 81 * Math.pow(delta1, 3));
         let delta0 = (3 / 2) * (Constants.k2 / Math.pow(alpha0, 2)) * ((3 * Math.pow(Math.cos(this.inclo), 2) - 1) / Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2));
-        let nd20 = this.ndot / (1 + delta0);
-        let ad20 = alpha0 / (1 - delta0);
+        this.nd20 = this.ndot / (1 + delta0);
+        this.ad20 = alpha0 / (1 - delta0);
+        this.ad20sq = Math.pow(this.ad20, 2);
+        this.ad20sq4 = Math.pow(this.ad20, 4);
         let s = Constants.s;
         let qoms2t = Constants.qoms2t;
         this.hp = alpha1 * (1 - this.ecco) - 6371; // TODO: is this correct?
-        console.log(this.hp);
 
         if (this.hp < 98) {
             s = 20 / Constants.xkmper + Constants.ae;
             qoms2t = Math.pow(Math.pow(qoms2t, 1 / 4) + Constants.s - s, 4);
 
         } else if (this.hp < 156) {
-            s = ad20 * (1 - this.ecco) - s + Constants.ae;
+            s = this.ad20 * (1 - this.ecco) - s + Constants.ae;
             qoms2t = Math.pow(Math.pow(qoms2t, 1 / 4) + Constants.s - s, 4);
         }
 
-        let teta = Math.cos(Constants.torad(this.inclo));
-        let tetasq = Math.pow(teta, 2);
-        let epsilon = 1 / (ad20 - s);
+        this.teta = Math.cos(Constants.torad(this.inclo));
+        this.tetasq = Math.pow(this.teta, 2);
+        this.tetasq4 = Math.pow(this.teta, 4);
+        let epsilon = 1 / (this.ad20 - s);
         let epsilonsq = Math.pow(epsilon, 2);
-        let beta0 = Math.sqrt(1 - Math.pow(this.ecco, 2));
-        let beta0sq = Math.pow(beta0, 2);
-        let eta = ad20 * this.ecco * epsilon;
+        let epsilonsq4 = Math.pow(epsilon, 4);
+        this.beta0 = Math.sqrt(1 - Math.pow(this.ecco, 2));
+        let beta0sq = Math.pow(this.beta0, 2);
+        this.beta0sq4 = Math.pow(this.beta0, 4);
+        this.beta0sq8 = Math.pow(this.beta0, 8);
+        let eta = this.ad20 * this.ecco * epsilon;
         let etasq = Math.pow(eta, 2);
-        let c2 = qoms2t * Math.pow(epsilon, 4) * nd20 * Math.pow(1 - etasq, -7 / 2) *
+        let etasq3 = Math.pow(eta, 3);
+
+        let c2 = qoms2t * epsilonsq4 * this.nd20 * Math.pow(1 - etasq, -7 / 2) *
             (
-                ad20 * (1 + 3 / 2 * etasq + 4 * this.ecco * eta + this.ecco * Math.pow(eta, 3))
+                this.ad20 * (1 + 3 / 2 * etasq + 4 * this.ecco * eta + this.ecco * etasq3)
                 + 3 / 2 * (Constants.k2 * epsilon) / (1 - etasq) *
-                (-1 / 2 + 3 / 2 * tetasq) *
+                (-1 / 2 + 3 / 2 * this.tetasq) *
                 (8 + 24 * etasq + 3 * Math.pow(eta, 4))
             );
         let c1 = this.bstar * c2;
-        let c3 = (qoms2t * Math.pow(epsilon, 5) * Constants.a30 * nd20 * Constants.ae * Math.sin(Constants.torad(this.inclo))) /
+        let c3 = (qoms2t * Math.pow(epsilon, 5) * Constants.a30 * this.nd20 * Constants.ae * Math.sin(Constants.torad(this.inclo))) /
             (Constants.k2 * this.ecco);
         let c4 =
-            2 * nd20 * qoms2t * Math.pow(epsilon, 4) * ad20 * beta0sq * Math.pow(1 - etasq, -7 / 2) *
+            2 * this.nd20 * qoms2t * epsilonsq4 * this.ad20 * beta0sq * Math.pow(1 - etasq, -7 / 2) *
             (
-                (2 * eta * (1 + this.ecco * eta) + 1 / 2 * this.ecco + 1 / 2 * Math.pow(eta, 3))
-                - (2 * Constants.k2 * epsilon) / (ad20 * (1 - etasq)) *
+                (2 * eta * (1 + this.ecco * eta) + 1 / 2 * this.ecco + 1 / 2 * etasq3)
+                - (2 * Constants.k2 * epsilon) / (this.ad20 * (1 - etasq)) *
                 (
-                    3 * (1 - 3 * tetasq) *
-                    (1 + 3 / 2 * etasq - 2 * this.ecco * eta - 1 / 2 * this.ecco * Math.pow(eta, 3)) +
-                    3 / 4 * (1 - tetasq) * (2 * etasq - this.ecco * eta - this.ecco * Math.pow(eta, 3)) *
+                    3 * (1 - 3 * this.tetasq) *
+                    (1 + 3 / 2 * etasq - 2 * this.ecco * eta - 1 / 2 * this.ecco * etasq3) +
+                    3 / 4 * (1 - this.tetasq) * (2 * etasq - this.ecco * eta - this.ecco * etasq3) *
                     Math.cos(Constants.torad(2 * this.argpo))
                 )
             );
         let c5 =
-            2 * qoms2t * Math.pow(epsilon, 4) * ad20 * beta0sq * Math.pow(1 - etasq, -7 / 2) *
-            (1 + 11 / 4 * eta * (eta + this.ecco) + this.ecco * Math.pow(eta, 3));
-        let d2 = 4 * ad20 * epsilon * Math.pow(c1, 2);
-        let d3 = 4 / 3 * ad20 * epsilonsq * (17 * ad20 + s) * Math.pow(c1, 3);
-        let d4 = 2 / 3 * ad20 * Math.pow(epsilon, 3) * (221 * ad20 + 31 * s) * Math.pow(c1, 4);
+            2 * qoms2t * epsilonsq4 * this.ad20 * beta0sq * Math.pow(1 - etasq, -7 / 2) *
+            (1 + 11 / 4 * eta * (eta + this.ecco) + this.ecco * etasq3);
+        let d2 = 4 * this.ad20 * epsilon * Math.pow(c1, 2);
+        let d3 = 4 / 3 * this.ad20 * epsilonsq * (17 * this.ad20 + s) * Math.pow(c1, 3);
+        let d4 = 2 / 3 * this.ad20 * Math.pow(epsilon, 3) * (221 * this.ad20 + 31 * s) * Math.pow(c1, 4);
     }
 
     sgp4(t) {
-        let deltat = "";
+        let deltat = (t.getTime() - this.epochdate.getTime()) / 1000;
+        let mdf = this.mo +
+            (1 +
+                (3 * Constants.k2 * (-1 + 3 * this.tetasq)) / (2 * this.ad20sq * Math.pow(this.beta0, 3)) +
+                (
+                    3 * Constants.k2sq * (13 - 78 * this.tetasq + 137 * this.tetasq4)
+                ) / (
+                    16 * this.ad20sq4 * Math.pow(this.beta0, 7)
+                )
+            ) * this.nd20 * deltat;
+        let wdf = this.argpo +
+            (
+                -(3 * Constants.k2 * (1 - 5 * this.tetasq)) / (2 * this.ad20sq * this.beta0sq4) +
+                (3 * Constants.k2sq * (7 - 114 * this.tetasq + 395 * this.tetasq4)) / (16 * this.ad20sq4 * this.beta0sq8) +
+                (5 * Constants.k4 * (3 - 36 * this.tetasq + 49 * this.tetasq4)) / (4 * this.ad20sq4 * this.beta0sq8)
+            ) * this.nd20 * deltat;
+        let odf = this.nodeo +
+            (
+                -(3 * Constants.k2 * this.teta) / (this.ad20sq * this.beta0sq4) +
+                (
+                    3 * Constants.k2sq * (4 * this.teta - 19 * Math.pow(this.teta, 3))
+                ) / (
+                    2 * this.ad20sq4 * this.beta0sq8
+                ) +
+                (5 * Constants.k4 * this.teta * (3 - 7 * this.tetasq)) / (2 * this.ad20sq4 * this.beta0sq8)
+            ) * this.nd20 * deltat;
         return {pos: "", speed: ""};
     }
 }
