@@ -132,6 +132,7 @@ class TLEData {
  * @returns {Array}
  */
 function loadtle(fulltle){
+    fulltle = fulltle.replace(/^\s*[\r\n]$/gm, "");
     let tlelines = fulltle.split("\n");
     let res = [];
     let tle = [];
