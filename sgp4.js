@@ -30,7 +30,7 @@ class Constants {
     static k2sq = Math.pow(5.413080E-4, 2); // value given by NO. 3
     static s = 1.01222928; // TODO: correct?
     static xkmper = 6378.135; // value given by NO. 3
-    static ae = 6378; // TODO: are we sure?
+    static ae = 1; // TODO: are we sure?
     static qoms2t = 1.88027916E-9; // value given by NO. 3
     static j3 = -.253881E-5; // value given by NO. 3
     static a30 = -this.j3 * Math.pow(this.ae, 3); // value given by NO. 3
@@ -308,7 +308,6 @@ class TLEData {
         let xdot = rdotk * ux + rfk * vx;
         let ydot = rdotk * uy + rfk * vy;
         let zdot = rdotk * uz + rfk * vz;
-        debugger;
 
         return {pos: {x: x, y: y, z: z}, speed: {x: xdot, y: ydot, z: zdot}};
     }
