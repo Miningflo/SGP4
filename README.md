@@ -11,6 +11,8 @@ JS implementation of the SGP4 algorithm to calculate satellite positions
 - [x] Give the ReadMe some love :heart:
 - [x] Update TLE file parser :satellite:
 - [x] Added a license :page_facing_up:
+- [ ] Implement helper functions :wrench:
+- [ ] Verify correctness of SGP4 :ok_hand:
 
 ## Usage:
 ### Include as following:
