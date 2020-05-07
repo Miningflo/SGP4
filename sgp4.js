@@ -89,6 +89,7 @@ class Constants {
  */
 class TLEData {
     constructor(lines) {
+        console.log(lines);
         if (lines.length === 2) {
             lines.unshift("UNKNOWN");
         }
