@@ -253,8 +253,64 @@ class TLEData {
         let lt = l + ll;
         let ayn = e * Math.sin(Constants.torad(w)) + aynl;
 
+        let ug = lt - o;
+        let ew = ug;
+        for (let i = 0; i < 100; i++) {
+            ew += (
+                ug - ayn * Math.cos(Constants.torad(ew)) + axn * Math.sin(Constants.torad(ew)) - ew
+            ) / (
+                -ayn * Math.sin(Constants.torad(ew)) - axn * Math.cos(Constants.torad(ew)) + 1
+            );
+        }
 
-        return {pos: "", speed: ""};
+        let ecose = axn * Math.cos(Constants.torad(ew)) + ayn * Math.sin(Constants.torad(ew));
+        let esine = axn * Math.sin(Constants.torad(ew)) + ayn * Math.cos(Constants.torad(ew));
+        let el = Math.sqrt(Math.pow(axn, 2) + Math.pow(ayn, 2));
+        let pl = a * (1 - Math.pow(el, 2)); // TODO: is negative
+        let r = a * (1 - ecose);
+        let rdot = Constants.ke * Math.sqrt(a) / r * esine;
+        let rf = Constants.ke * Math.sqrt(pl) / r; // TODO: can't take sqrt of negative
+        let cosu = (a / r) * (Math.cos(Constants.torad(ew)) - axn + (ayn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
+        let sinu = (a / r) * (Math.sin(Constants.torad(ew)) - ayn + (axn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
+        let u = Math.atan(Constants.torad(sinu / cosu));
+        let deltar = (Constants.k2 / (2 * pl)) * (1 - this.tetasq) * Math.cos(Constants.torad(2 * u));
+        let deltau = -(Constants.k2 / (4 * Math.pow(pl, 2))) * (7 * this.tetasq - 1) * Math.sin(Constants.torad(2 * u));
+        let deltao = (3 * Constants.k2 * this.teta) / (2 * Math.pow(pl, 2)) * Math.sin(Constants.torad(2 * u));
+        let deltai = (3 * Constants.k2 * this.teta) / (2 * Math.pow(pl, 2)) *
+            Math.sin(Constants.torad(this.inclo)) * Math.cos(Constants.torad(2 * u));
+        let deltardot = -((Constants.k2 * n) / pl) * (1 - this.tetasq) * Math.sin(Constants.torad(2 * u));
+        let deltarf = ((Constants.k2 * n) / pl) *
+            ((1 - this.tetasq) * Math.cos(Constants.torad(2 * u)) - 3 / 2 * (1 - 3 * this.tetasq));
+        let rk = r * (1 - 3 / 2 * Constants.k2 * Math.sqrt(1 - Math.pow(el, 2)) / Math.pow(pl, 2) * (3 * this.tetasq - 1)) + deltar;
+        let uk = u + deltau;
+        let ok = o + deltao;
+        let ik = this.inclo + deltai;
+        let rdotk = rdot + deltardot;
+        let rfk = rf + deltarf;
+
+        let mx = -Math.sin(Constants.torad(ok)) * Math.cos(Constants.torad(ik));
+        let my = Math.cos(Constants.torad(ok)) * Math.cos(Constants.torad(ik));
+        let mz = Math.sin(Constants.torad(ik));
+        let nx = Math.cos(Constants.torad(ok));
+        let ny = Math.sin(Constants.torad(ok));
+        let nz = 0;
+
+        let ux = (mx * Math.sin(Constants.torad(uk)) + nx * Math.cos(Constants.torad(uk)));
+        let uy = (my * Math.sin(Constants.torad(uk)) + ny * Math.cos(Constants.torad(uk)));
+        let uz = (mz * Math.sin(Constants.torad(uk)) + nz * Math.cos(Constants.torad(uk)));
+        let vx = (mx * Math.cos(Constants.torad(uk)) - nx * Math.sin(Constants.torad(uk)));
+        let vy = (my * Math.cos(Constants.torad(uk)) - ny * Math.sin(Constants.torad(uk)));
+        let vz = (mz * Math.cos(Constants.torad(uk)) - nz * Math.sin(Constants.torad(uk)));
+
+        let x = rk * ux;
+        let y = rk * uy;
+        let z = rk * uz;
+        let xdot = rdotk * ux + rfk * vx;
+        let ydot = rdotk * uy + rfk * vy;
+        let zdot = rdotk * uz + rfk * vz;
+        debugger;
+
+        return {pos: {x: x, y: y, z: z}, speed: {x: xdot, y: ydot, z: zdot}};
     }
 }
 

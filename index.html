@@ -11,7 +11,7 @@
         let tle = loadtle(fulltle);
         console.log(tle);
         tle.forEach(t => {
-            t.sgp4(new Date());
+            console.log(t.sgp4(new Date()));
         });
     });
 </script>
