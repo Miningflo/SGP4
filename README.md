@@ -37,7 +37,7 @@ tle_objects.forEach(obj => {
 #### [Fields](../../wiki/TLEData#fields-of-tledata-object) of `TLEData` object
 #### [Methods](../../wiki/TLEData#methods-of-tledata-object) of `TLEData` object:
 * `TLEData.constructor(tle-line-array)`
-  * Creates `TLEData` object with TLE string
+  * Creates `TLEData` object with TLE array
 * `TLEData.sgp4(t)`
   * Returns object like `{pos: a, speed: b}`
 ### [Constants](../../wiki/Constants)
