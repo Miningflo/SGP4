@@ -1,5 +1,5 @@
 # SGP4
-![Project Status: Unfinished](https://img.shields.io/badge/Project_Status-UNFINISHED-red.svg)
+![Project Status: Unfinished](https://img.shields.io/badge/Project_Status-MOSTLY_IMPLEMENTED-orange.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-BLUE.svg)](LICENSE.md)
 
 JS implementation of the SGP4 algorithm to calculate satellite positions
@@ -7,7 +7,7 @@ JS implementation of the SGP4 algorithm to calculate satellite positions
 [Read more](../../wiki/SGP4) about our implementation of SGP4
 
 ## To Do:
-- [ ] Implement SGP4 :alien:
+- [x] Implement SGP4 :alien:
 - [x] Give the ReadMe some love :heart:
 - [x] Update TLE file parser :satellite:
 - [x] Added a license :page_facing_up:
