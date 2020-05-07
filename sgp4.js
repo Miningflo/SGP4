@@ -121,7 +121,7 @@ class TLEData {
         this.ad20sq4 = Math.pow(this.ad20, 4);
         let s = Constants.s;
         this.qoms2t = Constants.qoms2t;
-        this.hp = alpha1 * (1 - this.ecco) - 6371; // TODO: is this correct?
+        this.hp = alpha1 * (1 - this.ecco) - Constants.xkmper; // TODO: is this correct?
 
         if (this.hp < 98) {
             s = 20 / Constants.xkmper + Constants.ae;
