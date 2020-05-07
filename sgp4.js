@@ -88,8 +88,10 @@ class Constants {
  * This class contains the decoded data from a single TLE
  */
 class TLEData {
-    constructor(tle) {
-        let lines = tle.split("\n");
+    constructor(lines) {
+        if (lines.length === 2) {
+            lines.unshift("UNKNOWN");
+        }
         this.satname = lines[0].trim();
         this.satnum = parseInt(lines[1].slice(2, 7));
         this.classification = lines[1].charAt(7);
@@ -131,12 +133,16 @@ class TLEData {
  */
 function loadtle(fulltle){
     let tlelines = fulltle.split("\n");
-    let tles = [];
-    // TODO: Update parser to work with 2 line TLE
-    while (tlelines.length) {
-        tles.push(new TLEData(tlelines.splice(0, 3).join("\n")));
-    }
-    return tles;
+    let res = [];
+    let tle = [];
+    tlelines.forEach(line => {
+        tle.push(line);
+        if (line[0] === "2") {
+            res.push(new TLEData(tle));
+            tle = [];
+        }
+    });
+    return res;
 }
 
 /**

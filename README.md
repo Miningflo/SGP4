@@ -1,6 +1,6 @@
 # SGP4
 ![Project Status: Unfinished](https://img.shields.io/badge/Project_Status-UNFINISHED-red.svg)
-[![License: MIT](https://img.shields.io/badge/License-MIT-BLUE.svg)](https://github.com/Miningflo/SGP4/blob/master/LICENSE.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-BLUE.svg)](LICENSE.md)
 
 JS implementation of the SGP4 algorithm to calculate satellite positions
 
@@ -9,7 +9,7 @@ JS implementation of the SGP4 algorithm to calculate satellite positions
 ## To Do:
 - [ ] Implement SGP4 :alien:
 - [x] Give the ReadMe some love :heart:
-- [ ] Update TLE file parser :satellite:
+- [x] Update TLE file parser :satellite:
 - [x] Added a license :page_facing_up:
 
 ## Usage:
@@ -25,7 +25,7 @@ loadfile("path/to/tle").then(tle => {
 });
 
 // get TLE objects from TLE string
-let tle_objects = loadtle("tle string");
+let tle_objects = loadtle("tle array");
 
 tle_objects.forEach(obj => {
     let t = new Date();
@@ -40,7 +40,7 @@ tle_objects.forEach(obj => {
 ## Objects:
 ### TLEData
 #### [Methods](../../wiki/TLEData#methods-of-tledata-object) of `TLEData` object:
-* `TLEData.constructor(tle-string)`
+* `TLEData.constructor(tle-line-array)`
   * Creates `TLEData` object with TLE string
 * `TLEData.sgp4(t)`
   * Returns object like `{pos: a, speed: b}`
