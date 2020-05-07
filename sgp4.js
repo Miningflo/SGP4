@@ -25,10 +25,16 @@
  * This is the class for constants
  */
 class Constants {
-    static g = 6.674 * Math.pow(10, -11);
-    static m = 5.9722 * Math.pow(10, 24);
-    static ke = Math.sqrt(this.g * this.m);
-    static k2 = 5.413080 * Math.pow(10, -4);
+    // static g = 3.986004418 * Math.pow(10, 14);
+    // static m = 5.9722 * Math.pow(10, 24);
+    static ke = 8681663.653; // TODO: find out why it's this value
+    static k2 = 5.413080E-4;
+    static s = 1.01222928; // TODO: correct?
+    static xkmper = 6378.135;
+    static ae = 6378; // TODO: are we sure?
+    static qoms2t = 1.88027916E-9;
+    static j3 = -.253881E-5;
+    static a30 = -this.j3 * Math.pow(this.ae, 3);
 
     static torad(x) {
         return x / 180 * Math.PI;
@@ -111,13 +117,33 @@ class TLEData {
         this.no = parseFloat(lines[2].slice(52, 63));
         this.revs = parseInt(lines[2].slice(63, 68));
 
-        // TODO: move time-independent calculations here
         let alpha1 = Math.pow(Constants.ke / this.no, 2 / 3);
         let delta1 = (3 / 2) * (Constants.k2 / Math.pow(alpha1, 2)) * ((3 * Math.pow(Math.cos(this.inclo), 2) - 1) / Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2));
         let alpha0 = alpha1 * (1 - 1 / 3 * delta1 - Math.pow(delta1, 2) - 134 / 81 * Math.pow(delta1, 3));
         let delta0 = (3 / 2) * (Constants.k2 / Math.pow(alpha0, 2)) * ((3 * Math.pow(Math.cos(this.inclo), 2) - 1) / Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2));
         let nd20 = this.ndot / (1 + delta0);
         let ad20 = alpha0 / (1 - delta0);
+        let s = Constants.s;
+        let qoms2t = Constants.qoms2t;
+        let hp = alpha1 * (1 - this.ecco) - 6371; // TODO: is this correct?
+
+        if (hp < 98) {
+            s = 20 / Constants.xkmper + Constants.ae;
+            qoms2t = Math.pow(Math.pow(qoms2t, 1 / 4) + Constants.s - s, 4);
+
+        } else if (hp < 156) {
+            s = ad20 * (1 - this.ecco) - s + Constants.ae;
+            qoms2t = Math.pow(Math.pow(qoms2t, 1 / 4) + Constants.s - s, 4);
+        }
+
+        let teta = Math.cos(Constants.torad(this.inclo));
+        let epsilon = 1 / (ad20 - s);
+        let beta0 = Math.sqrt(1 - Math.pow(this.ecco, 2));
+        let eta = ad20 * this.ecco * epsilon;
+        let c2 = qoms2t * Math.pow(epsilon, 4) * nd20 * Math.pow(1 - Math.pow(eta, 2), -7 / 2) * (ad20 * (1 + 3 / 2 * Math.pow(eta, 2) + 4 * this.ecco * eta + this.ecco * Math.pow(eta, 3)) + 3 / 2 * (Constants.k2 * epsilon) / (1 - Math.pow(eta, 2)) * (-1 / 2 + 3 / 2 * Math.pow(teta, 2)) * (8 + 24 * Math.pow(eta, 2) + 3 * Math.pow(eta, 4)));
+        let c1 = this.bstar * c2;
+        let c3 = (qoms2t * Math.pow(epsilon, 5) * Constants.a30 * nd20 * Constants.ae * Math.sin(Constants.torad(this.inclo))) / (Constants.k2 * this.ecco);
+        let c4 = "";
     }
 
     sgp4(t) {
