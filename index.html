@@ -8,7 +8,6 @@
 <body>
 <script>
     fetch("./tle.txt").then(res => res.text()).then(fulltle => {
-        console.log(JSON.stringify(fulltle));
         let tle = loadtle(fulltle);
         console.log(tle);
     });
