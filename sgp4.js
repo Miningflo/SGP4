@@ -136,6 +136,7 @@ function loadtle(fulltle){
     fulltle = fulltle.replace(/^\s*[\r\n]$/gm, "");
     console.log(fulltle);
     let tlelines = fulltle.split("\n");
+    console.log(tlelines);
     let res = [];
     let tle = [];
     tlelines.forEach(line => {
