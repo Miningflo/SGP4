@@ -309,7 +309,7 @@ class TLEData {
         let ydot = rdotk * uy + rfk * vy;
         let zdot = rdotk * uz + rfk * vz;
 
-        return {pos: {x: x, y: y, z: z}, speed: {x: xdot, y: ydot, z: zdot}};
+        return {pos: {x: x, y: y, z: z}, velocity: {x: xdot, y: ydot, z: zdot}};
     }
 }
 
