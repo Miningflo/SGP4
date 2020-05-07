@@ -145,12 +145,3 @@ function loadtle(fulltle){
     });
     return res;
 }
-
-/**
- * Load file as text
- * @param path
- * @returns {Promise<string>}
- */
-function loadfile(path){
-    return fetch(path).then(res => res.text());
-}

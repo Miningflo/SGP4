@@ -19,13 +19,8 @@ JS implementation of the SGP4 algorithm to calculate satellite positions
 ```
 ### Sample usage:
 ```javascript
-// Load a text file into a string
-loadfile("path/to/tle").then(tle => {
-    // tle contains the raw text of the file
-});
-
 // get TLE objects from TLE string
-let tle_objects = loadtle("tle array");
+let tle_objects = loadtle("tle-string");
 
 tle_objects.forEach(obj => {
     let t = new Date();
@@ -38,21 +33,19 @@ tle_objects.forEach(obj => {
 ```
 
 ## Objects:
-### TLEData
+### [[TLEData]]
 #### [Methods](../../wiki/TLEData#methods-of-tledata-object) of `TLEData` object:
 * `TLEData.constructor(tle-line-array)`
   * Creates `TLEData` object with TLE string
 * `TLEData.sgp4(t)`
   * Returns object like `{pos: a, speed: b}`
 #### [Fields](../../wiki/TLEData#fields-of-tledata-object) of `TLEData` object
-### Constants
+### [[Constants]]
 #### [Static fields](../../wiki/Constants#static-fields) of `Constants` object
 #### [Static methods](../../wiki/Constants#static-methods) of `Constants` object
 
 ## Functions:
-* `loadfile(path)`
-  * Returns a text string of file contents as promise
-* `loadtle(string)`
+* [[`loadtle`]]`(string)`
   * Loads a text string of TLEs into an array of `TLEData` objects
 ## Example TLE data:
 ```text
