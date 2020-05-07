@@ -134,6 +134,7 @@ class TLEData {
  */
 function loadtle(fulltle){
     fulltle = fulltle.replace(/^\s*[\r\n]$/gm, "");
+    console.log(fulltle);
     let tlelines = fulltle.split("\n");
     let res = [];
     let tle = [];
