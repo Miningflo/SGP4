@@ -33,19 +33,19 @@ tle_objects.forEach(obj => {
 ```
 
 ## Objects:
-### [[TLEData]]
+### [TLEData](../../wiki/TLEData)
 #### [Methods](../../wiki/TLEData#methods-of-tledata-object) of `TLEData` object:
 * `TLEData.constructor(tle-line-array)`
   * Creates `TLEData` object with TLE string
 * `TLEData.sgp4(t)`
   * Returns object like `{pos: a, speed: b}`
 #### [Fields](../../wiki/TLEData#fields-of-tledata-object) of `TLEData` object
-### [[Constants]]
+### [Constants](../../wiki/Constants)
 #### [Static fields](../../wiki/Constants#static-fields) of `Constants` object
 #### [Static methods](../../wiki/Constants#static-methods) of `Constants` object
 
 ## Functions:
-* [[`loadtle`]]`(string)`
+* [`loadtle(string)`](../../wiki/loadtle)
   * Loads a text string of TLEs into an array of `TLEData` objects
 ## Example TLE data:
 ```text
