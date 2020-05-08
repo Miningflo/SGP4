@@ -129,14 +129,14 @@ class TLEData {
                 Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2)
             );
         this.nd20 = this.no / (1 + delta0);
-        this.ad20 = a0 / (1 - delta0);
+        this.ad20 = a0 / (1 - delta0); // Verified: correct
 
         this.ad20sq = Math.pow(this.ad20, 2);
         this.ad20sq4 = Math.pow(this.ad20, 4);
         let s4 = Constants.s;
         this.qoms2t = Constants.qoms2t;
 
-        this.hp = a1 * (1 - this.ecco) - 6371.0088; // TODO: Is this correct? Update: probably yes
+        this.hp = a1 * (1 - this.ecco) - 6371.0088; // Verified: correct
 
         if (this.hp < 98) {
             s4 = 20 / Constants.xkmper + Constants.ae;
@@ -148,16 +148,17 @@ class TLEData {
         }
 
         this.teta = Math.cos(Constants.torad(this.inclo));
+        let epsilon = 1 / (this.ad20 - s4);
+        this.beta0 = Math.sqrt(1 - Math.pow(this.ecco, 2));
+        this.eta = this.ad20 * this.ecco * epsilon;
+
         this.tetasq = Math.pow(this.teta, 2);
         this.tetasq4 = Math.pow(this.teta, 4);
-        let epsilon = 1 / (this.ad20 - s4);
         let epsilonsq = Math.pow(epsilon, 2);
         this.epsilonsq4 = Math.pow(epsilon, 4);
-        this.beta0 = Math.sqrt(1 - Math.pow(this.ecco, 2));
         this.beta0sq = Math.pow(this.beta0, 2);
         this.beta0sq4 = Math.pow(this.beta0, 4);
         this.beta0sq8 = Math.pow(this.beta0, 8);
-        this.eta = this.ad20 * this.ecco * epsilon;
         let etasq = Math.pow(this.eta, 2);
         let etasq3 = Math.pow(this.eta, 3);
 
@@ -192,7 +193,7 @@ class TLEData {
     }
 
     sgp4(t) {
-        let deltat = (t.getTime() - this.epochdate.getTime()) / (1000 * 60);
+        let deltat = (t.getTime() - this.epochdate.getTime()) / (1000 * 60); // assume deltat is in minutes
         let mdf = this.mo +
             (1 +
                 (3 * Constants.k2 * (-1 + 3 * this.tetasq)) / (2 * this.ad20sq * Math.pow(this.beta0, 3)) +
@@ -234,8 +235,8 @@ class TLEData {
             a = this.ad20 * Math.pow(1 - this.c1 * deltat, 2);
             l = mp + w + o + this.nd20 * (3 / 2 * this.c1 * Math.pow(deltat, 2));
         } else {
-            mp = mp + deltaw + deltam;
-            w = w - deltaw - deltam;
+            mp = mdf + deltaw + deltam;
+            w = wdf - deltaw - deltam;
             e = e - this.bstar * this.c5 * (Math.sin(Constants.torad(mp)) - Math.sin(Constants.torad(this.mo)));
             a = this.ad20 * Math.pow(
                 1 -
@@ -278,14 +279,14 @@ class TLEData {
         }
 
         let ecose = axn * Math.cos(Constants.torad(ew)) + ayn * Math.sin(Constants.torad(ew));
-        let esine = axn * Math.sin(Constants.torad(ew)) + ayn * Math.cos(Constants.torad(ew));
+        let esine = axn * Math.sin(Constants.torad(ew)) - ayn * Math.cos(Constants.torad(ew));
         let el = Math.sqrt(Math.pow(axn, 2) + Math.pow(ayn, 2));
-        let pl = a * (1 - Math.pow(el, 2)); // TODO: is negative
+        let pl = a * (1 - Math.pow(el, 2));
         let r = a * (1 - ecose);
         let rdot = Constants.ke * Math.sqrt(a) / r * esine;
         let rf = Constants.ke * Math.sqrt(pl) / r; // TODO: can't take sqrt of negative
         let cosu = (a / r) * (Math.cos(Constants.torad(ew)) - axn + (ayn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
-        let sinu = (a / r) * (Math.sin(Constants.torad(ew)) - ayn + (axn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
+        let sinu = (a / r) * (Math.sin(Constants.torad(ew)) - ayn - (axn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
         let u = Constants.todeg(Math.atan(sinu / cosu));
         let deltar = (Constants.k2 / (2 * pl)) * (1 - this.tetasq) * Math.cos(Constants.torad(2 * u));
         let deltau = -(Constants.k2 / (4 * Math.pow(pl, 2))) * (7 * this.tetasq - 1) * Math.sin(Constants.torad(2 * u));
@@ -295,6 +296,7 @@ class TLEData {
         let deltardot = -((Constants.k2 * n) / pl) * (1 - this.tetasq) * Math.sin(Constants.torad(2 * u));
         let deltarf = ((Constants.k2 * n) / pl) *
             ((1 - this.tetasq) * Math.cos(Constants.torad(2 * u)) - 3 / 2 * (1 - 3 * this.tetasq));
+
         let rk = r * (1 - 3 / 2 * Constants.k2 * Math.sqrt(1 - Math.pow(el, 2)) / Math.pow(pl, 2) * (3 * this.tetasq - 1)) + deltar;
         let uk = u + deltau;
         let ok = o + deltao;
