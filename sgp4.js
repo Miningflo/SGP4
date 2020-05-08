@@ -271,7 +271,7 @@ class TLEData {
         let rf = Constants.ke * Math.sqrt(pl) / r; // TODO: can't take sqrt of negative
         let cosu = (a / r) * (Math.cos(Constants.torad(ew)) - axn + (ayn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
         let sinu = (a / r) * (Math.sin(Constants.torad(ew)) - ayn + (axn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
-        let u = Math.atan(Constants.torad(sinu / cosu));
+        let u = Constants.todeg(Math.atan(sinu / cosu));
         let deltar = (Constants.k2 / (2 * pl)) * (1 - this.tetasq) * Math.cos(Constants.torad(2 * u));
         let deltau = -(Constants.k2 / (4 * Math.pow(pl, 2))) * (7 * this.tetasq - 1) * Math.sin(Constants.torad(2 * u));
         let deltao = (3 * Constants.k2 * this.teta) / (2 * Math.pow(pl, 2)) * Math.sin(Constants.torad(2 * u));
