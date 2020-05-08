@@ -171,7 +171,7 @@ class TLEData {
     }
 
     sgp4(t) {
-        let deltat = (t.getTime() - this.epochdate.getTime()) * 1000;
+        let deltat = (t.getTime() - this.epochdate.getTime()) * 10;
         let mdf = this.mo +
             (1 +
                 (3 * Constants.k2 * (-1 + 3 * this.tetasq)) / (2 * this.ad20sq * Math.pow(this.beta0, 3)) +
