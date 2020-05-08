@@ -171,7 +171,7 @@ class TLEData {
     }
 
     sgp4(t) {
-        let deltat = (t.getTime() - this.epochdate.getTime()) / 1000;
+        let deltat = (t.getTime() - this.epochdate.getTime()) / 1000 / 1000;
         let mdf = this.mo +
             (1 +
                 (3 * Constants.k2 * (-1 + 3 * this.tetasq)) / (2 * this.ad20sq * Math.pow(this.beta0, 3)) +
@@ -316,7 +316,7 @@ class TLEData {
         let theta_GMST = ((gmst0 + 86400.0 * omega * ut) % 86400.0) * 2 * Math.PI / 86400.0;
 
         let pos = this.sgp4(date).pos;
-        let lon = Constants.todeg((Math.atan(pos.y / pos.x) - theta_GMST) % (2 * Math.PI));
+        let lon = (Math.atan(pos.y / pos.x) - theta_GMST) % (2 * Math.PI);
         let latitude = Math.atan(pos.z / Math.sqrt(pos.x * pos.x + pos.y * pos.y));
         let latitudeOld = latitude;
         let a = 6378.137;
@@ -328,7 +328,7 @@ class TLEData {
             latitude = Math.atan((pos.z + c) / Math.sqrt(pos.x * pos.x + pos.y * pos.y))
         } while (Math.abs(latitude - latitudeOld) < 1.0e-10);
 
-        return [lon, Constants.todeg(latitude)];
+        return [Constants.todeg(lon), Constants.todeg(latitude)];
 
     }
 }
