@@ -26,6 +26,7 @@
  */
 class Constants {
     static ke = 8681663.653; // TODO: find out why it's this value
+    // static ke = .743669161E-1;
     static k2 = 5.413080E-4; // value given by NO. 3
     static k2sq = Math.pow(5.413080E-4, 2); // value given by NO. 3
     static s = 1.01222928; // TODO: correct?
@@ -105,31 +106,51 @@ class TLEData {
         this.no = parseFloat(lines[2].slice(52, 63));
         this.revs = parseInt(lines[2].slice(63, 68));
 
-        let alpha1 = Math.pow(Constants.ke / this.no, 2 / 3);
-        let delta1 = (3 / 2) * (Constants.k2 / Math.pow(alpha1, 2)) * ((3 * Math.pow(Math.cos(this.inclo), 2) - 1) / Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2));
-        let alpha0 = alpha1 * (1 - 1 / 3 * delta1 - Math.pow(delta1, 2) - 134 / 81 * Math.pow(delta1, 3));
-        let delta0 = (3 / 2) * (Constants.k2 / Math.pow(alpha0, 2)) * ((3 * Math.pow(Math.cos(this.inclo), 2) - 1) / Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2));
-        this.nd20 = this.ndot / (1 + delta0);
-        this.ad20 = alpha0 / (1 - delta0);
+        let a1 = Math.pow(
+            Constants.ke / this.no,
+            2 / 3
+        );
+        let delta1 = (3 / 2) *
+            (Constants.k2 / Math.pow(a1, 2)) *
+            (
+                (3 * Math.pow(Math.cos(Constants.torad(this.inclo)), 2) - 1) /
+                Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2)
+            );
+        let a0 = a1 *
+            (1 -
+                1 / 3 * delta1 -
+                Math.pow(delta1, 2) -
+                134 / 81 * Math.pow(delta1, 3)
+            );
+        let delta0 = (3 / 2) *
+            (Constants.k2 / Math.pow(a0, 2)) *
+            (
+                (3 * Math.pow(Math.cos(Constants.torad(this.inclo)), 2) - 1) /
+                Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2)
+            );
+        this.nd20 = this.no / (1 + delta0);
+        this.ad20 = a0 / (1 - delta0);
+
         this.ad20sq = Math.pow(this.ad20, 2);
         this.ad20sq4 = Math.pow(this.ad20, 4);
-        let s = Constants.s;
+        let s4 = Constants.s;
         this.qoms2t = Constants.qoms2t;
-        this.hp = alpha1 * (1 - this.ecco) - Constants.xkmper; // TODO: is this correct?
+
+        this.hp = a1 * (1 - this.ecco) - 6371.0088; // TODO: Is this correct? Update: probably yes
 
         if (this.hp < 98) {
-            s = 20 / Constants.xkmper + Constants.ae;
-            this.qoms2t = Math.pow(Math.pow(this.qoms2t, 1 / 4) + Constants.s - s, 4);
+            s4 = 20 / Constants.xkmper + Constants.ae;
+            this.qoms2t = Math.pow(Math.pow(this.qoms2t, 1 / 4) + Constants.s - s4, 4);
 
         } else if (this.hp < 156) {
-            s = this.ad20 * (1 - this.ecco) - s + Constants.ae;
-            this.qoms2t = Math.pow(Math.pow(this.qoms2t, 1 / 4) + Constants.s - s, 4);
+            s4 = this.ad20 * (1 - this.ecco) - s4 + Constants.ae;
+            this.qoms2t = Math.pow(Math.pow(this.qoms2t, 1 / 4) + Constants.s - s4, 4);
         }
 
         this.teta = Math.cos(Constants.torad(this.inclo));
         this.tetasq = Math.pow(this.teta, 2);
         this.tetasq4 = Math.pow(this.teta, 4);
-        let epsilon = 1 / (this.ad20 - s);
+        let epsilon = 1 / (this.ad20 - s4);
         let epsilonsq = Math.pow(epsilon, 2);
         this.epsilonsq4 = Math.pow(epsilon, 4);
         this.beta0 = Math.sqrt(1 - Math.pow(this.ecco, 2));
@@ -166,12 +187,12 @@ class TLEData {
             2 * this.qoms2t * this.epsilonsq4 * this.ad20 * this.beta0sq * Math.pow(1 - etasq, -7 / 2) *
             (1 + 11 / 4 * this.eta * (this.eta + this.ecco) + this.ecco * etasq3);
         this.d2 = 4 * this.ad20 * epsilon * Math.pow(this.c1, 2);
-        this.d3 = 4 / 3 * this.ad20 * epsilonsq * (17 * this.ad20 + s) * Math.pow(this.c1, 3);
-        this.d4 = 2 / 3 * this.ad20 * Math.pow(epsilon, 3) * (221 * this.ad20 + 31 * s) * Math.pow(this.c1, 4);
+        this.d3 = 4 / 3 * this.ad20 * epsilonsq * (17 * this.ad20 + s4) * Math.pow(this.c1, 3);
+        this.d4 = 2 / 3 * this.ad20 * Math.pow(epsilon, 3) * (221 * this.ad20 + 31 * s4) * Math.pow(this.c1, 4);
     }
 
     sgp4(t) {
-        let deltat = (t.getTime() - this.epochdate.getTime()) * 100;
+        let deltat = (t.getTime() - this.epochdate.getTime()) / 1000;
         let mdf = this.mo +
             (1 +
                 (3 * Constants.k2 * (-1 + 3 * this.tetasq)) / (2 * this.ad20sq * Math.pow(this.beta0, 3)) +
