@@ -7,7 +7,7 @@
 </head>
 <body>
 <script>
-    fetch("./tle.txt").then(res => res.text()).then(fulltle => {
+    fetch("./tletest.txt").then(res => res.text()).then(fulltle => {
         let tle = loadtle(fulltle);
         console.log(tle);
         tle.forEach(t => {
