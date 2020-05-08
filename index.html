@@ -20,7 +20,7 @@
 </head>
 <body>
 <script>
-    fetch("./tletest.txt").then(res => res.text()).then(fulltle => {
+    fetch("./tle.txt").then(res => res.text()).then(fulltle => {
         document.getElementById("tle").innerText = fulltle;
         let tle = loadtle(fulltle);
         console.log(tle);
@@ -42,7 +42,7 @@
 <div>
     <p>Current loaded TLE:</p>
     <code id="tle"></code>
-    <p>Expected values of <code>tletest.txt</code>:</p>
+    <p>Expected values of <code>tle.txt</code>:</p>
     <table>
         <tr>
             <th>SGP4 TSINCE</th>
