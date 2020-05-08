@@ -66,12 +66,6 @@ class Constants {
         return [lsun, bsun];
     }
 
-    static getLonLat(coords) {
-        // TODO: convert pos from SGP4 to lon/lat
-        return [10, 10];
-
-    }
-
     static isLit(coords, date) {
         // TODO: calculate if sat at location is lit at date
         let sunloc = this.getSolarPosition(date);
@@ -309,6 +303,23 @@ class TLEData {
         let zdot = rdotk * uz + rfk * vz;
 
         return {pos: {x: x, y: y, z: z}, velocity: {x: xdot, y: ydot, z: zdot}};
+    }
+
+    getLonLat(date) {
+        let jd_year = 2415020.5 + (this.epochyear - 1900) * 365 + Math.floor((this.epochyear - 1900 - 1) / 4);
+        let jd = jd_year + this.epochdays - 1.0;
+
+        let ut = (jd + 0.5) % 1.0;
+        let t = (jd - ut - 2451545.0) / 36525.0;
+        let omega = 1.0 + 8640184.812866 / 3155760000.0;
+        let gmst0 = 24110.548412 + t * (8640184.812866 + t * (0.093104 - t * 6.2E-6));
+        let theta_GMST = ((gmst0 + 86400.0 * omega * ut) % 86400.0) * 2 * Math.PI / 86400.0;
+
+        let pos = this.sgp4(date).pos;
+        let lon = Constants.todeg((Math.atan(pos.y / pos.x) - theta_GMST) % (2 * Math.PI));
+
+        return [lon, 10];
+
     }
 }
 
