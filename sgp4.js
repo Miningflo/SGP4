@@ -84,6 +84,7 @@ class Constants {
  */
 class TLEData {
     constructor(lines) {
+        /* Decode TLE */
         if (lines.length === 2) {
             lines.unshift("UNKNOWN");
         }
@@ -106,6 +107,7 @@ class TLEData {
         this.no = parseFloat(lines[2].slice(52, 63));
         this.revs = parseInt(lines[2].slice(63, 68));
 
+        /* Original motion and semimajor axis */
         let a1 = Math.pow(
             Constants.ke / this.no,
             2 / 3
@@ -138,6 +140,7 @@ class TLEData {
 
         this.hp = a1 * (1 - this.ecco) - 6371.0088; // Verified: correct
 
+        /* Handle low perigee */
         if (this.hp < 98) {
             s4 = 20 / Constants.xkmper + Constants.ae;
             this.qoms2t = Math.pow(Math.pow(this.qoms2t, 1 / 4) + Constants.s - s4, 4);
@@ -147,6 +150,7 @@ class TLEData {
             this.qoms2t = Math.pow(Math.pow(this.qoms2t, 1 / 4) + Constants.s - s4, 4);
         }
 
+        /* Calculate constants */
         this.teta = Math.cos(Constants.torad(this.inclo));
         let epsilon = 1 / (this.ad20 - s4);
         this.beta0 = Math.sqrt(1 - Math.pow(this.ecco, 2));
@@ -193,7 +197,9 @@ class TLEData {
     }
 
     sgp4(t) {
+        /* Secular effects of atmospheric drag */
         let deltat = (t.getTime() - this.epochdate.getTime()) / (1000 * 60); // assume deltat is in minutes
+        deltat = 0;
         let mdf = this.mo +
             (1 +
                 (3 * Constants.k2 * (-1 + 3 * this.tetasq)) / (2 * this.ad20sq * Math.pow(this.beta0, 3)) +
@@ -231,6 +237,7 @@ class TLEData {
         let e = this.ecco - this.bstar * this.c4 * deltat;
         let a, l;
 
+        /* Modify equations for low perigee */
         if (this.hp < 220) {
             a = this.ad20 * Math.pow(1 - this.c1 * deltat, 2);
             l = mp + w + o + this.nd20 * (3 / 2 * this.c1 * Math.pow(deltat, 2));
@@ -260,6 +267,7 @@ class TLEData {
         let beta = Math.sqrt(1 - Math.pow(e, 2));
         let n = Constants.ke / Math.pow(a, 3 / 2);
 
+        /* Long-period periodic terms */
         let axn = e * Math.cos(Constants.torad(w));
         let ll = (Constants.a30 * Math.sin(Constants.torad(this.inclo))) / (8 * Constants.k2 * a * Math.pow(beta, 2)) *
             (axn) *
@@ -268,25 +276,36 @@ class TLEData {
         let lt = l + ll;
         let ayn = e * Math.sin(Constants.torad(w)) + aynl;
 
-        let ug = lt - o;
-        let ew = ug;
-        for (let i = 0; i < 100; i++) {
-            ew += (
-                ug - ayn * Math.cos(Constants.torad(ew)) + axn * Math.sin(Constants.torad(ew)) - ew
-            ) / (
-                -ayn * Math.sin(Constants.torad(ew)) - axn * Math.cos(Constants.torad(ew)) + 1
-            );
+        /* Solve kepler */
+        let capu = Constants.torad(lt - o) % (2 * Math.PI);
+        let ew = capu;
+        let sinepw, cosepw, t3, t4, t5, t6;
+        while (true) {
+            sinepw = Math.sin(ew);
+            cosepw = Math.cos(ew);
+            t3 = axn * sinepw;
+            t4 = ayn * cosepw;
+            t5 = axn * cosepw;
+            t6 = ayn * sinepw;
+            let epw = (capu - t4 + t3 - ew) / (1 - t5 - t6) + ew;
+            if (Math.abs(epw - ew) < 1e-6) {
+                break;
+            }
+            ew = epw;
         }
 
-        let ecose = axn * Math.cos(Constants.torad(ew)) + ayn * Math.sin(Constants.torad(ew));
-        let esine = axn * Math.sin(Constants.torad(ew)) - ayn * Math.cos(Constants.torad(ew));
+        /* Calculate preliminary quantities for short-period periodics */
+        let ecose = t5 + t6;
+        let esine = t3 - t4;
         let el = Math.sqrt(Math.pow(axn, 2) + Math.pow(ayn, 2));
         let pl = a * (1 - Math.pow(el, 2));
         let r = a * (1 - ecose);
-        let rdot = Constants.ke * Math.sqrt(a) / r * esine;
-        let rf = Constants.ke * Math.sqrt(pl) / r; // TODO: can't take sqrt of negative
-        let cosu = (a / r) * (Math.cos(Constants.torad(ew)) - axn + (ayn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
-        let sinu = (a / r) * (Math.sin(Constants.torad(ew)) - ayn - (axn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
+        let rdot = Constants.ke * Math.sqrt(a) / r * esine; // ABSOLUTELY WRONG
+        let rf = Constants.ke * Math.sqrt(pl) / r; // ABSOLUTELY WRONG
+        let cosu = ew * (cosepw - axn + ayn * esine * t3);
+        let sinu = ew * (sinepw - ayn - axn * esine * t3);
+        // let cosu = (a / r) * (Math.cos(Constants.torad(ew)) - axn + (ayn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
+        // let sinu = (a / r) * (Math.sin(Constants.torad(ew)) - ayn - (axn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
         let u = Constants.todeg(Math.atan(sinu / cosu));
         let deltar = (Constants.k2 / (2 * pl)) * (1 - this.tetasq) * Math.cos(Constants.torad(2 * u));
         let deltau = -(Constants.k2 / (4 * Math.pow(pl, 2))) * (7 * this.tetasq - 1) * Math.sin(Constants.torad(2 * u));
@@ -297,6 +316,7 @@ class TLEData {
         let deltarf = ((Constants.k2 * n) / pl) *
             ((1 - this.tetasq) * Math.cos(Constants.torad(2 * u)) - 3 / 2 * (1 - 3 * this.tetasq));
 
+        /* short-period periodics are added */
         let rk = r * (1 - 3 / 2 * Constants.k2 * Math.sqrt(1 - Math.pow(el, 2)) / Math.pow(pl, 2) * (3 * this.tetasq - 1)) + deltar;
         let uk = u + deltau;
         let ok = o + deltao;
@@ -304,6 +324,7 @@ class TLEData {
         let rdotk = rdot + deltardot;
         let rfk = rf + deltarf;
 
+        /* Calculate unit orientation vectors */
         let mx = -Math.sin(Constants.torad(ok)) * Math.cos(Constants.torad(ik));
         let my = Math.cos(Constants.torad(ok)) * Math.cos(Constants.torad(ik));
         let mz = Math.sin(Constants.torad(ik));
@@ -318,6 +339,7 @@ class TLEData {
         let vy = (my * Math.cos(Constants.torad(uk)) - ny * Math.sin(Constants.torad(uk)));
         let vz = (mz * Math.cos(Constants.torad(uk)) - nz * Math.sin(Constants.torad(uk)));
 
+        /* Calculate position and velocity */
         let x = rk * ux;
         let y = rk * uy;
         let z = rk * uz;
