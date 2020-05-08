@@ -66,7 +66,7 @@ class Constants {
         return [lsun, bsun];
     }
 
-    static isLit(coords, date) {
+    static isLit(date) {
         // TODO: calculate if sat at location is lit at date
         let sunloc = this.getSolarPosition(date);
         return true;
