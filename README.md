@@ -40,8 +40,10 @@ tle_objects.forEach(obj => {
 #### [Methods](../../wiki/TLEData#methods-of-tledata-object) of `TLEData` object:
 * `TLEData.constructor(tle-line-array)`
   * Creates `TLEData` object with TLE array
-* `TLEData.sgp4(t)`
-  * Returns object like `{pos: a, speed: b}`
+* `TLEData.sgp4(date)`
+  * Returns object like `{pos: {x: a, y: b, z: c}}, velocity: {x: d, y: e, z: f}}`
+* `TLEData.getLonLat(date)`
+  * Return `[longtitude, latitude]` array from `sgp4` at `date`
 ### [Constants](../../wiki/Constants)
 #### [Static fields](../../wiki/Constants#static-fields) of `Constants` object
 #### [Static methods](../../wiki/Constants#static-methods) of `Constants` object
