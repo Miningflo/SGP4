@@ -26,10 +26,8 @@
         console.log(tle);
         tle.forEach(t => {
             let tmp = t.sgp4(new Date());
-            console.log("\n\n\nPosition:");
-            console.log(tmp.pos);
-            console.log("\nVelocity:");
-            console.log(tmp.velocity);
+            console.log("Position: ", tmp.pos);
+            console.log("Velocity: ", tmp.velocity);
         });
     });
 </script>
