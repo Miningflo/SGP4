@@ -29,9 +29,9 @@ class Constants {
     // static ke = .743669161E-1;
     static k2 = 5.413080E-4; // value given by NO. 3
     static k2sq = Math.pow(5.413080E-4, 2); // value given by NO. 3
-    static s = 1.01222928; // TODO: correct?
     static xkmper = 6378.135; // value given by NO. 3
     static ae = 1; // TODO: are we sure?
+    static s = this.ae + 78 / this.xkmper;
     static qoms2t = 1.88027916E-9; // value given by NO. 3
     static j3 = -.253881E-5; // value given by NO. 3
     static a30 = -this.j3 * Math.pow(this.ae, 3); // value given by NO. 3
@@ -45,6 +45,14 @@ class Constants {
         return x * 180 / Math.PI;
     }
 
+    static sin(x) {
+        return Math.sin(this.torad(x));
+    }
+
+    static cos(x) {
+        return Math.cos(this.torad(x));
+    }
+
     static epochdate(year, days) {
         let yr = (year < 57) ? year + 2000 : year + 1900;
         let date = new Date(yr, 0, 1);
@@ -56,9 +64,9 @@ class Constants {
         let first = new Date(date.getFullYear(), 0, 1);
         let d = Math.round(((date - first) / 1000 / 60 / 60 / 24));
         let m = -3.6 + 360 / 365.24 * d;
-        let v = m + 1.9 * Math.sin(this.torad(m));
+        let v = m + 1.9 * this.sin(m);
         let lambda = v + 102.9;
-        let delta = -1 * (22.8 * Math.sin(this.torad(lambda)) + 0.6 * Math.pow(Math.sin(this.torad(lambda)), 3));
+        let delta = -1 * (22.8 * this.sin(lambda) + 0.6 * Math.pow(this.sin(lambda), 3));
 
         let t = date.getUTCHours() + date.getUTCMinutes() / 60 + date.getUTCSeconds() / 3600 + date.getUTCMilliseconds() / 3600000;
         let bsun = delta;
@@ -115,7 +123,7 @@ class TLEData {
         let delta1 = (3 / 2) *
             (Constants.k2 / Math.pow(a1, 2)) *
             (
-                (3 * Math.pow(Math.cos(Constants.torad(this.inclo)), 2) - 1) /
+                (3 * Math.pow(Constants.cos(this.inclo), 2) - 1) /
                 Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2)
             );
         let a0 = a1 *
@@ -127,7 +135,7 @@ class TLEData {
         let delta0 = (3 / 2) *
             (Constants.k2 / Math.pow(a0, 2)) *
             (
-                (3 * Math.pow(Math.cos(Constants.torad(this.inclo)), 2) - 1) /
+                (3 * Math.pow(Constants.cos(this.inclo), 2) - 1) /
                 Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2)
             );
         this.nd20 = this.no / (1 + delta0);
@@ -151,7 +159,7 @@ class TLEData {
         }
 
         /* Calculate constants */
-        this.teta = Math.cos(Constants.torad(this.inclo));
+        this.teta = Constants.cos(this.inclo);
         let epsilon = 1 / (this.ad20 - s4);
         this.beta0 = Math.sqrt(1 - Math.pow(this.ecco, 2));
         this.eta = this.ad20 * this.ecco * epsilon;
@@ -174,7 +182,7 @@ class TLEData {
                 (8 + 24 * etasq + 3 * Math.pow(this.eta, 4))
             );
         this.c1 = this.bstar * c2;
-        this.c3 = (this.qoms2t * Math.pow(epsilon, 5) * Constants.a30 * this.nd20 * Constants.ae * Math.sin(Constants.torad(this.inclo))) /
+        this.c3 = (this.qoms2t * Math.pow(epsilon, 5) * Constants.a30 * this.nd20 * Constants.ae * Constants.sin(this.inclo)) /
             (Constants.k2 * this.ecco);
         this.c4 =
             2 * this.nd20 * this.qoms2t * this.epsilonsq4 * this.ad20 * this.beta0sq * Math.pow(1 - etasq, -7 / 2) *
@@ -185,7 +193,7 @@ class TLEData {
                     3 * (1 - 3 * this.tetasq) *
                     (1 + 3 / 2 * etasq - 2 * this.ecco * this.eta - 1 / 2 * this.ecco * etasq3) +
                     3 / 4 * (1 - this.tetasq) * (2 * etasq - this.ecco * this.eta - this.ecco * etasq3) *
-                    Math.cos(Constants.torad(2 * this.argpo))
+                    Constants.cos(2 * this.argpo)
                 )
             );
         this.c5 =
@@ -225,11 +233,11 @@ class TLEData {
                 ) +
                 (5 * Constants.k4 * this.teta * (3 - 7 * this.tetasq)) / (2 * this.ad20sq4 * this.beta0sq8)
             ) * this.nd20 * deltat;
-        let deltaw = this.bstar * this.c3 * Math.cos(Constants.torad(this.argpo)) * deltat;
+        let deltaw = this.bstar * this.c3 * Constants.cos(this.argpo) * deltat;
         let deltam = -2 / 3 * this.qoms2t * this.bstar * this.epsilonsq4 * (Constants.ae) / (this.ecco * this.eta) *
             (
-                Math.pow(1 + this.eta * Math.cos(Constants.torad(mdf)), 3) -
-                Math.pow(1 + this.eta * Math.cos(Constants.torad(this.mo)), 3)
+                Math.pow(1 + this.eta * Constants.cos(mdf), 3) -
+                Math.pow(1 + this.eta * Constants.cos(this.mo), 3)
             );
         let mp = mdf;
         let w = wdf;
@@ -244,7 +252,7 @@ class TLEData {
         } else {
             mp = mdf + deltaw + deltam;
             w = wdf - deltaw - deltam;
-            e = e - this.bstar * this.c5 * (Math.sin(Constants.torad(mp)) - Math.sin(Constants.torad(this.mo)));
+            e = e - this.bstar * this.c5 * (Constants.sin(mp) - Constants.sin(this.mo));
             a = this.ad20 * Math.pow(
                 1 -
                 this.c1 * deltat -
@@ -268,13 +276,13 @@ class TLEData {
         let n = Constants.ke / Math.pow(a, 3 / 2);
 
         /* Long-period periodic terms */
-        let axn = e * Math.cos(Constants.torad(w));
-        let ll = (Constants.a30 * Math.sin(Constants.torad(this.inclo))) / (8 * Constants.k2 * a * Math.pow(beta, 2)) *
+        let axn = e * Constants.cos(w);
+        let ll = (Constants.a30 * Constants.sin(this.inclo)) / (8 * Constants.k2 * a * Math.pow(beta, 2)) *
             (axn) *
             ((3 + 5 * this.teta) / (1 + this.teta));
-        let aynl = (Constants.a30 * Math.sin(Constants.torad(this.inclo))) / (4 * Constants.k2 * a * Math.pow(beta, 2));
+        let aynl = (Constants.a30 * Constants.sin(this.inclo)) / (4 * Constants.k2 * a * Math.pow(beta, 2));
         let lt = l + ll;
-        let ayn = e * Math.sin(Constants.torad(w)) + aynl;
+        let ayn = e * Constants.sin(w) + aynl;
 
         /* Solve kepler */
         let capu = Constants.torad(lt - o) % (2 * Math.PI);
@@ -295,26 +303,24 @@ class TLEData {
         }
 
         /* Calculate preliminary quantities for short-period periodics */
-        let ecose = t5 + t6;
-        let esine = t3 - t4;
+        let ecose = axn * cosepw + ayn * sinepw;
+        let esine = axn * sinepw - ayn * cosepw;
         let el = Math.sqrt(Math.pow(axn, 2) + Math.pow(ayn, 2));
         let pl = a * (1 - Math.pow(el, 2));
         let r = a * (1 - ecose);
         let rdot = Constants.ke * Math.sqrt(a) / r * esine; // ABSOLUTELY WRONG
         let rf = Constants.ke * Math.sqrt(pl) / r; // ABSOLUTELY WRONG
-        let cosu = ew * (cosepw - axn + ayn * esine * t3);
-        let sinu = ew * (sinepw - ayn - axn * esine * t3);
-        // let cosu = (a / r) * (Math.cos(Constants.torad(ew)) - axn + (ayn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
-        // let sinu = (a / r) * (Math.sin(Constants.torad(ew)) - ayn - (axn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
-        let u = Constants.todeg(Math.atan(sinu / cosu));
-        let deltar = (Constants.k2 / (2 * pl)) * (1 - this.tetasq) * Math.cos(Constants.torad(2 * u));
-        let deltau = -(Constants.k2 / (4 * Math.pow(pl, 2))) * (7 * this.tetasq - 1) * Math.sin(Constants.torad(2 * u));
-        let deltao = (3 * Constants.k2 * this.teta) / (2 * Math.pow(pl, 2)) * Math.sin(Constants.torad(2 * u));
+        let cosu = (a / r) * (Math.cos((ew)) - axn + (ayn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
+        let sinu = (a / r) * (Math.sin((ew)) - ayn - (axn * esine) / (1 + Math.sqrt(1 - Math.pow(el, 2))));
+        let u = Math.atan(sinu / cosu);
+        let deltar = (Constants.k2 / (2 * pl)) * (1 - this.tetasq) * Math.cos((2 * u));
+        let deltau = -(Constants.k2 / (4 * Math.pow(pl, 2))) * (7 * this.tetasq - 1) * Math.sin((2 * u));
+        let deltao = (3 * Constants.k2 * this.teta) / (2 * Math.pow(pl, 2)) * Math.sin((2 * u));
         let deltai = (3 * Constants.k2 * this.teta) / (2 * Math.pow(pl, 2)) *
-            Math.sin(Constants.torad(this.inclo)) * Math.cos(Constants.torad(2 * u));
-        let deltardot = -((Constants.k2 * n) / pl) * (1 - this.tetasq) * Math.sin(Constants.torad(2 * u));
+            Constants.sin(this.inclo) * Math.cos((2 * u));
+        let deltardot = -((Constants.k2 * n) / pl) * (1 - this.tetasq) * Math.sin((2 * u));
         let deltarf = ((Constants.k2 * n) / pl) *
-            ((1 - this.tetasq) * Math.cos(Constants.torad(2 * u)) - 3 / 2 * (1 - 3 * this.tetasq));
+            ((1 - this.tetasq) * Math.cos((2 * u)) - 3 / 2 * (1 - 3 * this.tetasq));
 
         /* short-period periodics are added */
         let rk = r * (1 - 3 / 2 * Constants.k2 * Math.sqrt(1 - Math.pow(el, 2)) / Math.pow(pl, 2) * (3 * this.tetasq - 1)) + deltar;
@@ -325,19 +331,19 @@ class TLEData {
         let rfk = rf + deltarf;
 
         /* Calculate unit orientation vectors */
-        let mx = -Math.sin(Constants.torad(ok)) * Math.cos(Constants.torad(ik));
-        let my = Math.cos(Constants.torad(ok)) * Math.cos(Constants.torad(ik));
-        let mz = Math.sin(Constants.torad(ik));
-        let nx = Math.cos(Constants.torad(ok));
-        let ny = Math.sin(Constants.torad(ok));
+        let mx = -Constants.sin(ok) * Constants.cos(ik);
+        let my = Constants.cos(ok) * Constants.cos(ik);
+        let mz = Constants.sin(ik);
+        let nx = Constants.cos(ok);
+        let ny = Constants.sin(ok);
         let nz = 0;
 
-        let ux = (mx * Math.sin(Constants.torad(uk)) + nx * Math.cos(Constants.torad(uk)));
-        let uy = (my * Math.sin(Constants.torad(uk)) + ny * Math.cos(Constants.torad(uk)));
-        let uz = (mz * Math.sin(Constants.torad(uk)) + nz * Math.cos(Constants.torad(uk)));
-        let vx = (mx * Math.cos(Constants.torad(uk)) - nx * Math.sin(Constants.torad(uk)));
-        let vy = (my * Math.cos(Constants.torad(uk)) - ny * Math.sin(Constants.torad(uk)));
-        let vz = (mz * Math.cos(Constants.torad(uk)) - nz * Math.sin(Constants.torad(uk)));
+        let ux = mx * Math.sin(uk) + nx * Math.cos(uk);
+        let uy = my * Math.sin(uk) + ny * Math.cos(uk);
+        let uz = mz * Math.sin(uk) + nz * Math.cos(uk);
+        let vx = mx * Math.cos(uk) - nx * Math.sin(uk);
+        let vy = my * Math.cos(uk) - ny * Math.sin(uk);
+        let vz = mz * Math.cos(uk) - nz * Math.sin(uk);
 
         /* Calculate position and velocity */
         let x = rk * ux;
