@@ -83,6 +83,7 @@ class Constants {
 
     static parse(number) {
         // decimal point assumed
+        // TODO: verify correctness
         return parseFloat(number.charAt(0) + "." + number.substr(1, 5) + "e" + number.substr(-2));
     }
 }
