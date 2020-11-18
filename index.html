@@ -20,16 +20,18 @@
 </head>
 <body>
 <script>
-    fetch("./tle.txt").then(res => res.text()).then(fulltle => {
-        document.getElementById("tle").innerText = fulltle;
-        let tle = loadtle(fulltle);
-        console.log(tle);
-        tle.forEach(t => {
-            let tmp = t.sgp4(new Date());
-            console.log("Position: ", tmp.pos);
-            console.log("Velocity: ", tmp.velocity);
+    fetch("./tle.txt")
+        .then(res => res.text())
+        .then(fulltle => {
+            document.getElementById("tle").innerText = fulltle;
+            let tle = TLEParser.loadtle(fulltle);
+            console.log(tle);
+            tle.forEach(t => {
+                let tmp = t.sgp4(new Date());
+                console.log("Position: ", tmp.pos);
+                console.log("Velocity: ", tmp.velocity);
+            });
         });
-    });
 </script>
 <h2>Include the script as following:</h2>
 <code>
