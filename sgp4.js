@@ -25,7 +25,9 @@
  * This is the class for constants
  */
 class C {
-    
+    static ke = .743669161E-1; // (rad/min)^(3/2)
+    static xmnpda = 1440.0; // minutes per day
+    static k2 = 5.413080E-4;
 
     static torad(x) {
         return x / 180 * Math.PI;
@@ -105,18 +107,42 @@ class TLEData {
         this.epochyear = parseInt(lines[1].slice(18, 20));
         this.epochdays = parseFloat(lines[1].slice(20, 32));
         this.epochdate = C.epochdate(this.epochyear, this.epochdays);
-        this.ndot = parseFloat(lines[1].slice(33, 43));
-        this.nddot = C.parse(lines[1].slice(44, 52));
-        this.bstar = C.parse(lines[1].slice(53, 61));
+        this.ndot = parseFloat(lines[1].slice(33, 43)); // revs/day² => change in rev/day = accel
+        this.nddot = C.parse(lines[1].slice(44, 52)); // revs/day³ => change in accel
+        this.bstar = C.parse(lines[1].slice(53, 61)); // 1/rad
         this.elem = parseInt(lines[1].slice(64, 68));
 
-        this.inclo = parseFloat(lines[2].slice(8, 16));
-        this.nodeo = parseFloat(lines[2].slice(17, 25));
+        this.inclo = parseFloat(lines[2].slice(8, 16)); // deg
+        this.nodeo = parseFloat(lines[2].slice(17, 25)); // deg
         this.ecco = parseFloat("." + lines[2].slice(26, 33));
-        this.argpo = parseFloat(lines[2].slice(34, 42));
-        this.mo = parseFloat(lines[2].slice(43, 51));
-        this.no = parseFloat(lines[2].slice(52, 63));
+        this.argpo = parseFloat(lines[2].slice(34, 42)); // deg
+        this.mo = parseFloat(lines[2].slice(43, 51)); // deg
+        this.no = parseFloat(lines[2].slice(52, 63)); // orbits/day
         this.revs = parseInt(lines[2].slice(63, 68));
+
+        /* Convert input */
+        this.nodeo = C.torad(this.nodeo);
+        this.argpo = C.torad(this.argpo);
+        this.mo = C.torad(this.mo);
+        this.inclo = C.torad(this.inclo);
+        this.no = this.no * 2 * Math.PI / C.xmnpda; // # rev per min in rad
+        this.ndot = this.ndot * 2 * Math.PI / Math.pow(C.xmnpda, 2); // # rev / min² in rad
+        this.nddot = this.nddot * 2 * Math.PI / Math.pow(C.xmnpda, 3); // # rev / min³ in rad
+
+
+        /* Non-time dependant equations */
+        let a1 = Math.pow(C.ke / this.no, 2 / 3);
+        let deltatemp = (3 / 2) * C.k2 * (
+            (3 * Math.pow(Math.cos(this.inclo), 2) - 1) /
+            Math.pow(1 - Math.pow(this.ecco, 2), 3 / 2)
+        );
+        let delta1 = deltatemp / Math.pow(a1, 2);
+        let a0 = a1 * (1 - (1 / 3) * delta1 - Math.pow(delta1, 2) - (134 / 81) * Math.pow(delta1, 3));
+        let delta0 = deltatemp / Math.pow(a0, 2);
+        let nd20 = this.no / (1 + delta0);
+        let ad20 = a0 / (1 - delta0);
+
+        console.log(nd20, ad20);
     }
 
     sgp4(t) {
@@ -124,7 +150,7 @@ class TLEData {
     }
 
     getLonLat(date) {
-        return [20,30]
+        return [20, 30]
     }
 }
 
