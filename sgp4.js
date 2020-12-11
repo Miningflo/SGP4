@@ -53,6 +53,10 @@ class C {
         return Math.cos(this.torad(x));
     }
 
+    static asin(x) {
+        return this.todeg(Math.asin(x));
+    }
+
     static epochdate(year, days) {
         let yr = (year < 57) ? year + 2000 : year + 1900;
         let date = new Date(yr, 0, 1);
@@ -64,7 +68,7 @@ class C {
         // calculate declination of the sun
         let first = new Date(date.getFullYear(), 0, 1); // jan 1st
         let n = ((date - first) / 1000 / 60 / 60 / 24); // days since jan 1st (not rounded)
-        let declination = Math.asin(
+        let declination = C.asin(
             C.sin(-23.44) *
             C.cos(
                 360 / 365.24 * (n + 10) +
