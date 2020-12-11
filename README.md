@@ -51,7 +51,7 @@ tle_objects.forEach(obj => {
 #### [Static methods](../../wiki/Constants#static-methods) of `Constants` object
 
 ## Functions:
-* [`loadtle(string)`](../../wiki/loadtle)
+* [`TLEParser.loadtle(string)`](../../wiki/loadtle)
   * Loads a text string of TLEs into an array of `TLEData` objects
 ## Example TLE data:
 ```text
