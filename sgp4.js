@@ -25,17 +25,7 @@
  * This is the class for constants
  */
 class C {
-    static ke = 8681663.653; // TODO: find out why it's this value
-    // static ke = .743669161E-1;
-    static k2 = 5.413080E-4; // value given by NO. 3
-    static k2sq = Math.pow(5.413080E-4, 2); // value given by NO. 3
-    static xkmper = 6378.135; // value given by NO. 3
-    static ae = 1; // TODO: are we sure?
-    static s = this.ae + 78 / this.xkmper;
-    static qoms2t = 1.88027916E-9; // value given by NO. 3
-    static j3 = -.253881E-5; // value given by NO. 3
-    static a30 = -this.j3 * Math.pow(this.ae, 3); // value given by NO. 3
-    static k4 = .62098875E-6;
+    
 
     static torad(x) {
         return x / 180 * Math.PI;
