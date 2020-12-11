@@ -130,7 +130,7 @@ class TLEData {
     }
 
     getLonLat(date) {
-
+        return [20,30]
     }
 }
 
