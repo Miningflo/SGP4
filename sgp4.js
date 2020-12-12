@@ -52,7 +52,7 @@ class C {
     static epochdate(year, days) {
         let yr = (year < 57) ? year + 2000 : year + 1900;
         let date = new Date(yr, 0, 1);
-        date.setDate(date.getDate() + days);
+        date.setTime(date.getTime() + days * 86400000); // support for fractional days
         return date;
     }
 

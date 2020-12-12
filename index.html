@@ -3,35 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Demo</title>
+    <script src="console.js"></script>
     <script src="sgp4.js"></script>
-    <style>
-        #tle {
-            margin-bottom: 10px;
-        }
-
-        div {
-            margin-top: 80px;
-        }
-    </style>
 </head>
 <body>
 <script>
+    let console = new Console("tle");
     fetch("./tle.txt")
         .then(res => res.text())
         .then(fulltle => {
-            document.getElementById("tle").innerText = fulltle;
+            console.log(fulltle);
             let tle = TLEParser.loadtle(fulltle);
             console.log(tle);
             tle.forEach(t => {
                 let tmp = t.sgp4(new Date());
-                console.log("Position: ", tmp.pos);
-                console.log("Velocity: ", tmp.velocity);
+                // console.log("Position: ", tmp.pos);
+                // console.log("Velocity: ", tmp.velocity);
             });
         });
 </script>
-<div>
-    <p>Current loaded TLE:</p>
-    <code id="tle"></code>
-</div>
 </body>
 </html>
