@@ -142,7 +142,7 @@ class TLEData {
         let nd20 = this.no / (1 + delta0);
         let ad20 = a0 / (1 - delta0);
 
-        console.log(nd20, ad20);
+        // console.log(nd20, ad20);
     }
 
     sgp4(t) {
