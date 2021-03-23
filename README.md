@@ -1,5 +1,5 @@
 # SGP4
-![Project Status: Unfinished](https://img.shields.io/badge/Project_Status-ON_HOLD-orange.svg)
+![Project Status: Unfinished](https://img.shields.io/badge/Project_Status-UNFINISHED-orange.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-BLUE.svg)](LICENSE.md)
 
 JS implementation of the SGP4 algorithm to calculate satellite positions
@@ -22,15 +22,17 @@ JS implementation of the SGP4 algorithm to calculate satellite positions
 ### Sample usage:
 ```javascript
 // get TLE objects from TLE string
-let tle_objects = loadtle("tle-string");
+let tle_objects = TLEParser.loadtle("tle-string");
 
 tle_objects.forEach(obj => {
     let t = new Date();
     let sgp4 = obj.sgp4(t);                     // do SGP4 calculations
-    let postion = sgp4.pos;                     // get position
-    let speed = sgp4.speed;                     // get speed
-    let islit = Constants.isLit(postion, t);    // Check if a given point is lit at a given time
-    let lonLat = Constants.getLonLat(postion);  // Convert SGP4 coordinates to Lon/Lat
+
+    /* WIP */
+    // let postion = sgp4.pos;                     // get position
+    // let speed = sgp4.speed;                     // get speed
+    // let islit = C.isLit(postion, t);    // Check if a given point is lit at a given time
+    // let lonLat = C.getLonLat(postion);  // Convert SGP4 coordinates to Lon/Lat
 });
 ```
 
@@ -49,7 +51,7 @@ tle_objects.forEach(obj => {
 #### [Static methods](../../wiki/Constants#static-methods) of `Constants` object
 
 ## Functions:
-* [`loadtle(string)`](../../wiki/loadtle)
+* [`TLEParser.loadtle(string)`](../../wiki/loadtle)
   * Loads a text string of TLEs into an array of `TLEData` objects
 ## Example TLE data:
 ```text

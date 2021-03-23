@@ -3,82 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Demo</title>
+    <script src="console.js"></script>
     <script src="sgp4.js"></script>
-    <style>
-        td {
-            padding: 15px;
-        }
-
-        #tle {
-            margin-bottom: 10px;
-        }
-
-        div {
-            margin-top: 80px;
-        }
-    </style>
 </head>
 <body>
 <script>
-    fetch("./tle.txt").then(res => res.text()).then(fulltle => {
-        document.getElementById("tle").innerText = fulltle;
-        let tle = loadtle(fulltle);
-        console.log(tle);
-        tle.forEach(t => {
-            let tmp = t.sgp4(new Date());
-            console.log("Position: ", tmp.pos);
-            console.log("Velocity: ", tmp.velocity);
-        });
-    });
-</script>
-<h2>Include the script as following:</h2>
-<code>
-    &ltscript src="https://miningflo.github.io/SGP4/sgp4.js"&gt&lt/script&gt
-</code>
-<p>Or open the developer console <code>-></code></p>
+    function fetchtle(id) {
+        return fetch("https://tle.ivanstanojevic.me/api/tle/" + id)
+            .then(res => res.json())
+            .then(res => {
+                let tle = res["name"] + "\n" + res["line1"] + "\n" + res["line2"];
+                return TLEParser.loadtle(tle)[0];
+            })
+    }
 
-<div>
-    <p>Current loaded TLE:</p>
-    <code id="tle"></code>
-    <p>Expected values of <code>tle.txt</code>:</p>
-    <table>
-        <tr>
-            <th>SGP4 TSINCE</th>
-            <th>X</th>
-            <th>Y</th>
-            <th>Z</th>
-        </tr>
-        <tr>
-            <td>0.</td>
-            <td>2328.97048951</td>
-            <td>-5995.22076416</td>
-            <td>1719.97067261</td>
-        </tr>
-        <tr>
-            <td>360.00000000</td>
-            <td>2456.10705566</td>
-            <td>-6071.93853760</td>
-            <td>1222.89727783</td>
-        </tr>
-        <tr>
-            <td>720.00000000</td>
-            <td>2567.56195068</td>
-            <td>-6112.50384522</td>
-            <td>713.96397400</td>
-        </tr>
-        <tr>
-            <td>1080.00000000</td>
-            <td>2663.09078980</td>
-            <td>-6115.48229980</td>
-            <td>196.39640427</td>
-        </tr>
-        <tr>
-            <td>1440.00000000</td>
-            <td>2742.55133057</td>
-            <td>-6079.67144775</td>
-            <td>-326.38095856</td>
-        </tr>
-    </table>
-</div>
+    let console = new Console("tle");
+    let ids = [25544, 33591];
+
+    ids.forEach(id => {
+        fetchtle(id).then(tle => {
+            console.log(tle);
+        })
+    })
+
+</script>
 </body>
 </html>
