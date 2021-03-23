@@ -7,8 +7,8 @@ JS implementation of the SGP4 algorithm to calculate satellite positions
 [Read more](../../wiki/SGP4) about our implementation of SGP4
 
 ## To Do:
-- [x] Implement SGP4 :alien:
-- [x] Give the ReadMe some love :heart:
+- [ ] Implement SGP4 :alien:
+- [ ] Give the ReadMe some love :heart:
 - [x] Update TLE file parser :satellite:
 - [x] Added a license :page_facing_up:
 - [ ] Implement helper functions :wrench:
