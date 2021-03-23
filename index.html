@@ -9,18 +9,25 @@
 <body>
 <script>
     let console = new Console("tle");
-    fetch("./tle.txt")
-        .then(res => res.text())
-        .then(fulltle => {
-            console.log(fulltle);
-            let tle = TLEParser.loadtle(fulltle);
+    // fetch("./tle.txt")
+    //     .then(res => res.text())
+    //     .then(fulltle => {
+    //         console.log(fulltle);
+    //         let tle = TLEParser.loadtle(fulltle);
+    //         console.log(tle);
+    //         tle.forEach(t => {
+    //             let tmp = t.sgp4(new Date());
+    //             // console.log("Position: ", tmp.pos);
+    //             // console.log("Velocity: ", tmp.velocity);
+    //         });
+    //     });
+    let ids = [25544, 33591];
+    ids.forEach(id => {
+        TLEParser.fetchtle(id).then(tle => {
             console.log(tle);
-            tle.forEach(t => {
-                let tmp = t.sgp4(new Date());
-                // console.log("Position: ", tmp.pos);
-                // console.log("Velocity: ", tmp.velocity);
-            });
-        });
+        })
+    })
+
 </script>
 </body>
 </html>

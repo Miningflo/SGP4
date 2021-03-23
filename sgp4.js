@@ -175,4 +175,13 @@ class TLEParser {
         });
         return res;
     }
+
+    static fetchtle(id) {
+        return fetch("https://tle.ivanstanojevic.me/api/tle/" + id)
+            .then(res => res.json())
+            .then(res => {
+                let tle = res["name"] + "\n" + res["line1"] + "\n" + res["line2"];
+                return this.loadtle(tle)[0];
+            })
+    }
 }
