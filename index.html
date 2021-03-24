@@ -25,16 +25,18 @@
             }
         }
     </script>
-    <script src="./src/sgp4.js"></script>
+    <script src="./src/sgp4.js" type="module"></script>
 </head>
 <body>
-<script>
+<script type="module">
+    import TLE from "./src/TLE.js";
+
     function fetchtle(id) {
         return fetch("https://tle.ivanstanojevic.me/api/tle/" + id)
             .then(res => res.json())
             .then(res => {
-                let tle = res["name"] + "\n" + res["line1"] + "\n" + res["line2"];
-                return TLEParser.loadtle(tle)[0];
+                console.log(res)
+                return new TLE(res);
             })
     }
 

@@ -6,16 +6,26 @@ import C from './constants.js';
 // 1 25544U 98067A   21082.92793648  .00002082  00000-0  46048-4 0  9999
 // 2 25544  51.6455  44.4186 0003325 141.5646 249.4454 15.48937893275389
 
+/**
+ *
+ * @param {string} string
+ * @returns {number}
+ */
 function parseTlePower(string) {
     // APPLY LEADING DECIMAL
     // from: [+|-| ]   X X X X X   [+|-] X
     // to:   [+|-]   . X X X X X e [+|-] X
-    return parseFloat(string.charAt(0) + "." + string.substr(1, 5) + "e" + string.substr(-2));
+    return parseFloat(string[0] + "." + string.substr(1, 5) + "e" + string.substr(-2));
 }
 
-function calcChecksum(line){
+function calcChecksum(line) {
     // sum of all digits on a line ('-' counts as 1) modulo 10
-    return line.replace(/-/g, '1').replace(/[^1-9]/g, '').split('').reduce((a, n) => a + Number(n), 0) % 10;
+    return line
+            .slice(0, -1)
+            .replace(/-/g, '1')
+            .replace(/[^1-9]/g, '')
+            .split('')
+            .reduce((a, n) => a + Number(n), 0) % 10;
 }
 
 export default class TLE {
@@ -45,10 +55,15 @@ export default class TLE {
         // calculate and check checksum for line 1
         const checksum1 = parseInt(line1.slice(68, 69));
         console.assert(
-            checksum1 == calcChecksum(line1),
+            checksum1 === calcChecksum(line1),
             `invalid TLE data on line 1 (name: ${this.satname}, number: ${this.satnum})`
         );
 
+        // check if satnums of TLE lines are the same
+        console.assert(
+            parseInt(line2.slice(2, 7)) === this.satnum,
+            "TLE lines are not from the same satellite"
+        );
         // angle of inclination (degrees)
         this.inclo = parseFloat(line2.slice(8, 16));
         // right ascension of the ascending node (degrees)
@@ -73,7 +88,7 @@ export default class TLE {
         // calculate and check checksum for line 2
         const checksum2 = parseInt(line2.slice(68, 69));
         console.assert(
-            checksum2 == calcChecksum(line2),
+            checksum2 === calcChecksum(line2),
             `invalid TLE data on line 2 (name: ${this.satname}, number: ${this.satnum})`
         );
 
