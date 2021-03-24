@@ -1,4 +1,4 @@
-import C from "./src/constants.js";
+import C from "./constants.js";
 
 export default class SGP {
     constructor(tle) {
