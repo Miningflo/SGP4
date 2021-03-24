@@ -21,11 +21,11 @@ function parseTlePower(string) {
 function calcChecksum(line) {
     // sum of all digits on a line ('-' counts as 1) modulo 10
     return line
-            .slice(0, -1)
-            .replace(/-/g, '1')
-            .replace(/[^1-9]/g, '')
-            .split('')
-            .reduce((a, n) => a + Number(n), 0) % 10;
+        .slice(0, -1)
+        .replace(/-/g, '1')
+        .replace(/[^1-9]/g, '')
+        .split('')
+        .reduce((a, n) => a + Number(n), 0) % 10;
 }
 
 export default class TLE {
@@ -37,23 +37,31 @@ export default class TLE {
         this.satnum = parseInt(line1.slice(2, 7));
         // [C (classified) ,U (unclassified), S (secret🤐)]
         this.classification = line1.charAt(7);
+        // year of launch (YY)
+        this.idy = parseInt(line1.slice(9, 11));
+        // Launch number
+        this.idn = parseInt(line1.slice(11, 14));
+        // Piece of launch
+        this.idp = line1.slice(14, 17);
         // last 2 digits TLE epoch year (reference moment)
         this.epochyear = parseInt(line1.slice(18, 20));
         // epoch day of year + fractional portion of day
         this.epochdays = parseFloat(line1.slice(20, 32));
         // date object of epoch
         this.epochdate = Utils.epochDate(this.epochyear, this.epochdays);
-        // first dirivative of mean motion (revs/day²) => acceleration (aka ballistic coefficient)
+        // first derivative of mean motion (revs/day²) => acceleration (aka ballistic coefficient)
         this.ndot = parseFloat(line1.slice(33, 43));
-        // second dirivative of mean motion (revs/day³) => change in acceleration
+        // second derivative of mean motion (revs/day³) => change in acceleration
         this.nddot = parseTlePower(line1.slice(44, 52));
         // drag term / radiation pressure coefficient (1/rad)
         this.bstar = parseTlePower(line1.slice(53, 61));
+        // Ephemeris type
+        this.eph = parseInt(line1[62]);
         // TLE element number
         this.elem = parseInt(line1.slice(64, 68));
 
         // calculate and check checksum for line 1
-        const checksum1 = parseInt(line1.slice(68, 69));
+        const checksum1 = parseInt(line1[68]);
         console.assert(
             checksum1 === calcChecksum(line1),
             `invalid TLE data on line 1 (name: ${this.satname}, number: ${this.satnum})`
@@ -86,7 +94,7 @@ export default class TLE {
         this.revs = parseInt(line2.slice(63, 68));
 
         // calculate and check checksum for line 2
-        const checksum2 = parseInt(line2.slice(68, 69));
+        const checksum2 = parseInt(line2[68]);
         console.assert(
             checksum2 === calcChecksum(line2),
             `invalid TLE data on line 2 (name: ${this.satname}, number: ${this.satnum})`
