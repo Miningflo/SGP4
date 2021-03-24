@@ -46,6 +46,7 @@ export function epochDate(year, days) {
 
 /**
  * Calculate coordinates of vertical position of the sun
+ * Source: https://en.wikipedia.org/wiki/Position_of_the_Sun#Calculations
  * @param {Date} date
  * @returns {{lat: number, lon: number}}
  */

@@ -20,7 +20,7 @@
             })
     }
 
-    let ids = [25544, 33591];
+    let ids = [25544];
 
     ids.forEach(id => {
         fetchTle(id).then(tle => {
@@ -29,16 +29,6 @@
             sgp4.calc(new Date())
         })
     })
-
-
-    fetch("./data/tle.txt")
-        .then(res => res.text())
-        .then(text => {
-            console.log(text)
-            IO.readTle(text).forEach(tle => {
-                console.log(tle.toString());
-            });
-        });
 
 </script>
 </body>
