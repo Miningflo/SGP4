@@ -11,7 +11,7 @@
     import SGP4 from "./src/sgp4.js";
     import IO from "./src/IO.js";
 
-    function fetchtle(id) {
+    function fetchTle(id) {
         return fetch("https://tle.ivanstanojevic.me/api/tle/" + id)
             .then(res => res.json())
             .then(res => {
@@ -23,10 +23,10 @@
     let ids = [25544, 33591];
 
     ids.forEach(id => {
-        fetchtle(id).then(tle => {
-            // console.log(tle);
-            // let sgp4 = new SGP4(tle);
-            // sgp4.calc(new Date())
+        fetchTle(id).then(tle => {
+            console.log(tle);
+            let sgp4 = new SGP4(tle);
+            sgp4.calc(new Date())
         })
     })
 
