@@ -3,28 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Demo</title>
-    <script src="console.js"></script>
-    <script src="sgp4.js"></script>
+    <script src="./src/sgp4.js" type="module"></script>
 </head>
 <body>
-<script>
-    function fetchtle(id) {
+<script type="module">
+    import TLE from "./src/TLE.js";
+    import SGP4 from "./src/sgp4.js";
+    import IO from "./src/IO.js";
+
+    function fetchTle(id) {
         return fetch("https://tle.ivanstanojevic.me/api/tle/" + id)
             .then(res => res.json())
             .then(res => {
-                let tle = res["name"] + "\n" + res["line1"] + "\n" + res["line2"];
-                return TLEParser.loadtle(tle)[0];
+                console.log(res)
+                return new TLE(res);
             })
     }
 
-    let console = new Console("tle");
     let ids = [25544, 33591];
 
     ids.forEach(id => {
-        fetchtle(id).then(tle => {
+        fetchTle(id).then(tle => {
             console.log(tle);
+            let sgp4 = new SGP4(tle);
+            sgp4.calc(new Date())
         })
     })
+
+
+    fetch("./data/tle.txt")
+        .then(res => res.text())
+        .then(text => {
+            console.log(text)
+            let tle = IO.readTle(text);
+            console.log(tle);
+        });
 
 </script>
 </body>
