@@ -35,8 +35,9 @@
         .then(res => res.text())
         .then(text => {
             console.log(text)
-            let tle = IO.readTle(text);
-            console.log(tle);
+            IO.readTle(text).forEach(tle => {
+                console.log(tle.toString());
+            });
         });
 
 </script>

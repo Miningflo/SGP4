@@ -28,6 +28,19 @@ function calcChecksum(line) {
         .reduce((a, n) => a + Number(n), 0) % 10;
 }
 
+/**
+ * Convert a number into the TLE small number notation
+ * @param {number} n
+ * @returns {string}
+ */
+function formatExp(n){
+    return (n * 10)
+        .toExponential(4)
+        .replace("e", "")
+        .replace(".", "")
+        .padStart(8, " ");
+}
+
 export default class TLE {
     constructor({name, line1, line2}) {
 
@@ -77,9 +90,9 @@ export default class TLE {
         // right ascension of the ascending node (degrees)
         // angle between orbital plane and reference point
         this.nodeo = parseFloat(line2.slice(17, 25));
-        // excentricity of orbit
+        // eccentricity of orbit
         // APPLY LEADING DECIMAL
-        // distace between focal points / length of major axis
+        // distance between focal points / length of major axis
         this.ecco = parseFloat("." + line2.slice(26, 33));
         // argument of perigee (degrees)
         // angle between ascending node and perigee (closest point to earth)
@@ -111,5 +124,52 @@ export default class TLE {
         this.no = this.no * 2 * Math.PI / C.XMNPDA;                     // # rev per min in rad
         this.ndot = this.ndot * 2 * Math.PI / Math.pow(C.XMNPDA, 2);    // # rev / min² in rad
         this.nddot = this.nddot * 2 * Math.PI / Math.pow(C.XMNPDA, 3);  // # rev / min³ in rad
+    }
+
+    _formatLine1(){
+        let {
+            satnum, classification, idy, idn, idp, epochyear, epochdays, ndot, nddot, bstar, eph, elem
+        } = this;
+
+        idn = idn.toString().padStart(3, "0");
+        epochdays = epochdays.toFixed(8).padStart(12, "0");
+        ndot = (ndot / 2 / Math.PI * Math.pow(C.XMNPDA, 2))
+            .toFixed(8)
+            .replace("0", "").padStart(10, " ");
+        nddot = formatExp(nddot / 2 / Math.PI * Math.pow(C.XMNPDA, 3));
+        bstar = formatExp(bstar);
+        elem = elem.toString().padStart(4, " ");
+
+        return `1 ${satnum}${classification} ${idy}${idn}${idp} ${epochyear}${epochdays} ${ndot} ${nddot} ${bstar} ${eph} ${elem}`;
+    }
+
+    get checksum1(){
+        return calcChecksum(this._formatLine1() + "*");
+    }
+
+    _formatLine2(){
+        let {
+            satnum, inclo, nodeo, ecco, argpo, mo, no, revs
+        } = this;
+
+        inclo = Utils.rad2deg(inclo).toFixed(4).padStart(8, " ");
+        nodeo = Utils.rad2deg(nodeo).toFixed(4).padStart(8, " ");
+        ecco = ecco.toFixed(7).substring(2);
+        argpo = Utils.rad2deg(argpo).toFixed(4).padStart(8, " ");
+        mo = Utils.rad2deg(mo).toFixed(4).padStart(8, " ");
+        no = (no / 2 / Math.PI * C.XMNPDA).toFixed(8).padStart(11, " ")
+        revs = revs.toString().padStart(5, " ");
+
+        return `2 ${satnum} ${inclo} ${nodeo} ${ecco} ${argpo} ${mo} ${no}${revs}`
+    }
+
+    get checksum2(){
+        return calcChecksum(this._formatLine2() + "*");
+    }
+
+    toString() {
+        return this.satname + "\n" +
+            this._formatLine1() + this.checksum1 + "\n" +
+            this._formatLine2() + this.checksum2 + "\n";
     }
 }
