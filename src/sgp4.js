@@ -1,20 +1,30 @@
-Error: Cannot find module 'fs/promises'
-Require stack:
-- /usr/local/lib/node_modules/minify/lib/minify.js
-- /usr/local/lib/node_modules/minify/bin/minify.js
-    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:815:15)
-    at Function.Module._load (internal/modules/cjs/loader.js:667:27)
-    at Module.require (internal/modules/cjs/loader.js:887:19)
-    at require (internal/modules/cjs/helpers.js:74:18)
-    at Object.<anonymous> (/usr/local/lib/node_modules/minify/lib/minify.js:5:20)
-    at Module._compile (internal/modules/cjs/loader.js:999:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)
-    at Module.load (internal/modules/cjs/loader.js:863:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:708:14)
-    at Module.require (internal/modules/cjs/loader.js:887:19) {
-  code: 'MODULE_NOT_FOUND',
-  requireStack: [
-    '/usr/local/lib/node_modules/minify/lib/minify.js',
-    '/usr/local/lib/node_modules/minify/bin/minify.js'
-  ]
+import C from './constants.js';
+
+
+export default class SGP4 {
+    constructor(tle) {
+        this.tle = tle
+
+        /* Non-time dependant equations */
+        let a1 = Math.pow(C.KE / this.tle.no, 2 / 3);
+        let deltatemp = (3 / 2) * C.K2 * (
+            (3 * Math.pow(Math.cos(this.tle.inclo), 2) - 1) /
+            Math.pow(1 - Math.pow(this.tle.ecco, 2), 3 / 2)
+        );
+        let delta1 = deltatemp / Math.pow(a1, 2);
+        let a0 = a1 * (1 - (1 / 3) * delta1 - Math.pow(delta1, 2) - (134 / 81) * Math.pow(delta1, 3));
+        let delta0 = deltatemp / Math.pow(a0, 2);
+        let nd20 = this.tle.no / (1 + delta0);
+        let ad20 = a0 / (1 - delta0);
+
+        console.log(nd20, ad20);
+    }
+
+    calc(date) {
+        console.log(date)
+    }
+
+    getLonLat(date) {
+        return [20, 30]
+    }
 }
