@@ -3,33 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Demo</title>
-    <script>
-        class Console {
-            constructor(id) {
-                this.id = id;
-                let pre = document.createElement("pre");
-                pre.id = id;
-                document.body.appendChild(pre);
-            }
-
-            log(...msg) {
-                for(let arg of msg){
-                    if(typeof arg !== "object"){
-                        document.getElementById(this.id).innerText += arg + " ";
-                    }else{
-                        document.getElementById(this.id).innerText += JSON.stringify(arg, null, 2);
-                    }
-                }
-                document.getElementById(this.id).innerText += "\n\n";
-                window.console.log(...msg);
-            }
-        }
-    </script>
     <script src="./src/sgp4.js" type="module"></script>
 </head>
 <body>
 <script type="module">
     import TLE from "./src/TLE.js";
+    import SGP4 from "./src/sgp4.js";
+    import IO from "./src/IO.js";
 
     function fetchtle(id) {
         return fetch("https://tle.ivanstanojevic.me/api/tle/" + id)
@@ -40,14 +20,24 @@
             })
     }
 
-    let console = new Console("tle");
     let ids = [25544, 33591];
 
     ids.forEach(id => {
         fetchtle(id).then(tle => {
-            console.log(tle);
+            // console.log(tle);
+            // let sgp4 = new SGP4(tle);
+            // sgp4.calc(new Date())
         })
     })
+
+
+    fetch("./data/tle.txt")
+        .then(res => res.text())
+        .then(text => {
+            console.log(text)
+            let tle = IO.readTle(text);
+            console.log(tle);
+        });
 
 </script>
 </body>
