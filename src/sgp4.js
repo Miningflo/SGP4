@@ -38,6 +38,15 @@ export default class SGP4 {
         let beta0 = Math.sqrt(1 - Math.pow(this.tle.ecco, 2));
         let eta = ad20 * this.tle.ecco * epsilon;
 
+        let c2 = qoms2t * Math.pow(epsilon, 4) * nd20 * Math.pow(1 - Math.pow(eta, 2), -7 / 2) *
+            (
+                ad20 * (1 + 3 / 2 * Math.pow(eta, 2) + 4 * this.tle.ecco * eta + this.tle.ecco * Math.pow(eta, 3))
+                + 3 / 2 * (C.K2 * epsilon) / (1 - Math.pow(eta, 2)) *
+                (-1 / 2 + 3 / 2 * Math.pow(theta, 2)) *
+                (8 + 24 * Math.pow(eta, 2) + 3 * Math.pow(eta, 4))
+            );
+        let c1 = this.tle.bstar * c2;
+
         console.log(nd20, ad20);
     }
 
